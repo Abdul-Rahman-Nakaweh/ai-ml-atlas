@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { GlossaryCard } from "@/components/GlossaryCard";
 import { SearchBar } from "@/components/SearchBar";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { glossaryEntries } from "@/data/glossary";
 
 export function GlossarySearch() {
@@ -23,7 +24,13 @@ export function GlossarySearch() {
 
   return (
     <PageContainer className="pb-16">
-      <div className="mb-8 max-w-xl">
+      <PageIntro
+        title="Glossary = quick recall"
+        what="Short acronym and term cards with where each fits in the atlas."
+        why="Use this when you forget what a term means; use Technique Library when you need trade-offs and depth."
+        next={[{ label: "Technique Library", href: "/techniques" }]}
+      />
+      <div className="mb-8 max-w-xl mt-8">
         <SearchBar
           value={search}
           onChange={setSearch}

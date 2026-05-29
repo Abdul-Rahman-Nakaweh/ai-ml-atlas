@@ -15,6 +15,7 @@ export const pipelineStages: PipelineStageData[] = [
       "Ignoring deployment constraints until late",
     ],
     relatedConcepts: ["Target", "Label", "Evaluation", "MLOps"],
+    comesAfter: "Data Collection",
   },
   {
     id: "data-collection",
@@ -30,6 +31,8 @@ export const pipelineStages: PipelineStageData[] = [
       "Ignoring consent, privacy, and bias in sourcing",
     ],
     relatedConcepts: ["Dataset", "Feature", "Label", "Data drift"],
+    comesBefore: "Problem Definition",
+    comesAfter: "Data Cleaning",
   },
   {
     id: "data-cleaning",
@@ -45,6 +48,8 @@ export const pipelineStages: PipelineStageData[] = [
       "Dropping outliers without domain justification",
     ],
     relatedConcepts: ["Preprocessing", "Data Leakage"],
+    comesBefore: "Data Collection",
+    comesAfter: "Preprocessing",
   },
   {
     id: "preprocessing",
@@ -66,6 +71,9 @@ export const pipelineStages: PipelineStageData[] = [
       "Applying different preprocessing in training vs inference",
     ],
     relatedConcepts: ["Feature Engineering", "Data Leakage"],
+    techniqueIds: ["standardization", "one-hot-encoding", "missing-value-imputation"],
+    comesBefore: "Data Cleaning",
+    comesAfter: "Feature Engineering",
   },
   {
     id: "feature-engineering",
@@ -155,23 +163,27 @@ export const pipelineStages: PipelineStageData[] = [
   },
   {
     id: "validation-strategy",
-    name: "Validation Strategy",
+    name: "Validation",
     order: 10,
     description:
-      "Split data into train/validation/test sets or use cross-validation while keeping the test set unseen.",
+      "Split data into train, validation, and test sets—or use cross-validation—while keeping the test set unseen until final evaluation.",
     whyItMatters:
-      "Honest validation prevents overfitting estimates and data leakage surprises.",
+      "Honest validation prevents overfitting estimates and data leakage surprises. Validation supports tuning; test supports final claims only.",
     techniques: [
       "Train/Test Split",
       "Cross-Validation",
       "Stratified Cross-Validation",
       "Nested Cross-Validation",
     ],
+    techniqueIds: ["train-test-split", "cross-validation", "nested-cv", "data-leakage"],
     commonMistakes: [
       "Data leakage from preprocessing or feature selection",
       "Repeatedly peeking at test performance",
+      "Tuning hyperparameters on the test set",
     ],
     relatedConcepts: ["Data Leakage", "Evaluation"],
+    comesBefore: "Hyperparameter Tuning (inner loops may use CV)",
+    comesAfter: "Evaluation on held-out test data",
   },
   {
     id: "evaluation",

@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { SectionHeader } from "@/components/SectionHeader";
 import { InfoCallout } from "@/components/InfoCallout";
 import { ComparisonTable } from "@/components/ComparisonTable";
@@ -38,7 +39,16 @@ export default function TinyMLPage() {
 
       <section className="section-padding">
         <PageContainer>
-          <InfoCallout variant="warning" title="Why deployment verification matters">
+          <PageIntro
+            title="Apply: TinyML / Embedded ML"
+            what="Constraints, model trade-offs, optimization, and Python → C → device verification."
+            why="On microcontrollers, accuracy alone is not enough—latency, memory, and parity matter."
+            next={[
+              { label: "TinyML learning path", href: "/paths#tinyml" },
+              { label: "Decision guide: embedded", href: "/guides#embedded-tinyml" },
+            ]}
+          />
+          <InfoCallout variant="warning" title="Why deployment verification matters" className="mt-8">
             Python training predictions often differ from exported C or on-device inference due to quantization, preprocessing differences, or compiler optimizations. Compare sample-by-sample across Python → exported C → microcontroller before trusting field performance.
           </InfoCallout>
 
@@ -49,7 +59,7 @@ export default function TinyMLPage() {
             </p>
           </div>
 
-          <div className="mt-12">
+          <div id="constraints" className="mt-12 scroll-mt-24">
             <SectionHeader title="Embedded constraints" />
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {constraints.map((c) => (
@@ -89,7 +99,7 @@ export default function TinyMLPage() {
             </ul>
           </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          <div id="verification" className="mt-12 grid gap-6 scroll-mt-24 lg:grid-cols-2">
             <div>
               <SectionHeader title="Deployment verification" className="mb-4" />
               <ol className="space-y-2 text-sm text-slate-400">

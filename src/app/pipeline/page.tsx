@@ -1,7 +1,9 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { SectionHeader } from "@/components/SectionHeader";
 import { PipelineStageCard } from "@/components/PipelineStageCard";
+import { PipelineTimeline } from "@/components/PipelineTimeline";
 import { InfoCallout } from "@/components/InfoCallout";
 import { pipelineStages } from "@/data/pipelineStages";
 
@@ -21,7 +23,22 @@ export default function PipelinePage() {
 
       <section className="section-padding">
         <PageContainer>
-          <InfoCallout variant="warning" title="Data leakage reminder">
+          <PageIntro
+            title="Knowledge map: ML Pipeline"
+            what="Fourteen stages from problem definition through monitoring—each with techniques, mistakes, and before/after context."
+            why="The pipeline organizes the atlas; most techniques belong to a specific stage."
+            next={[
+              { label: "Technique Library", href: "/techniques" },
+              { label: "Evaluation", href: "/evaluation" },
+            ]}
+          />
+
+          <div className="mt-8 mb-10 lg:hidden">
+            <p className="mb-4 text-sm font-medium text-slate-400">Quick timeline</p>
+            <PipelineTimeline stages={pipelineStages} />
+          </div>
+
+          <InfoCallout variant="warning" title="Data leakage reminder" className="mt-4">
             Preprocessing, feature selection, and tuning must not use information from the test set. The test set should remain unseen until final evaluation.
           </InfoCallout>
 

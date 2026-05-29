@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { GlossaryEntry } from "@/types";
 
 interface GlossaryCardProps {
@@ -21,6 +22,14 @@ export function GlossaryCard({ entry }: GlossaryCardProps) {
       <p className="mt-2 text-xs text-slate-500">
         Related: {entry.relatedConcepts.join(" · ")}
       </p>
+      {entry.techniqueId && (
+        <Link
+          href={`/techniques#${entry.techniqueId}`}
+          className="mt-3 inline-flex text-xs font-medium text-cyan-400 hover:text-cyan-300"
+        >
+          Open technique card →
+        </Link>
+      )}
     </article>
   );
 }

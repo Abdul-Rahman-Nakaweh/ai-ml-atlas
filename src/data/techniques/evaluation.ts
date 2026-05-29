@@ -1,12 +1,10 @@
-import type { Technique } from "@/types";
-
 const evalBase = {
   generation: "Cross-generation" as const,
   pipelineStage: "Evaluation" as const,
   purpose: "General" as const,
 };
 
-export const evaluation: Technique[] = [
+export const evaluation = [
   {
     ...evalBase,
     id: "confusion-matrix",

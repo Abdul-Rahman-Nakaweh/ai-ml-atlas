@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { SectionHeader } from "@/components/SectionHeader";
 import { InfoCallout } from "@/components/InfoCallout";
 
@@ -35,7 +36,16 @@ export default function MLOpsPage() {
 
       <section className="section-padding">
         <PageContainer>
-          <div className="grid gap-6 lg:grid-cols-2">
+          <PageIntro
+            title="Apply: MLOps / Deployment Lifecycle"
+            what="Versioning, reproducibility, deployment targets, monitoring, and safe updates."
+            why="Models become real systems only with ops discipline—not notebook accuracy alone."
+            next={[
+              { label: "ML Pipeline: Monitoring", href: "/pipeline#monitoring" },
+              { label: "TinyML", href: "/tinyml" },
+            ]}
+          />
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
             <article className="glass-card p-6">
               <SectionHeader title="Versioning & reproducibility" className="mb-4" />
               <ul className="space-y-2 text-sm text-slate-400">

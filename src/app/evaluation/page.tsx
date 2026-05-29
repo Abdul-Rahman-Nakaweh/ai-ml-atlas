@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { SectionHeader } from "@/components/SectionHeader";
 import { InfoCallout } from "@/components/InfoCallout";
 
@@ -52,7 +53,16 @@ export default function EvaluationPage() {
 
       <section className="section-padding">
         <PageContainer>
-          <InfoCallout variant="warning" title="Accuracy is not always enough">
+          <PageIntro
+            title="Apply: Evaluation & Validation"
+            what="Classification and regression metrics, validation strategies, leakage, and test discipline."
+            why="A model is only useful if measured the right way for your risks and constraints."
+            next={[
+              { label: "Common Mistakes", href: "/mistakes" },
+              { label: "Learning path", href: "/paths#evaluation" },
+            ]}
+          />
+          <InfoCallout variant="warning" title="Accuracy is not always enough" className="mt-8">
             In fraud detection, medical screening, or rare-event prediction, missing a positive case may cost far more than a false alarm. Choose precision, recall, F1, or cost-weighted metrics accordingly.
           </InfoCallout>
 

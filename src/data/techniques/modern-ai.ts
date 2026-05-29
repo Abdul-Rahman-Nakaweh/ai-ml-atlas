@@ -1,6 +1,4 @@
-import type { Technique } from "@/types";
-
-export const modernAi: Technique[] = [
+export const modernAi = [
   {
     id: "transformer",
     name: "Transformer",

@@ -1,6 +1,5 @@
-import type { Technique } from "@/types";
-
-export const classicalMl: Technique[] = [
+/** Raw entries — normalized in index.ts. Add fields or use enriched.ts for full depth. */
+export const classicalMl = [
   {
     id: "linear-regression",
     name: "Linear Regression",

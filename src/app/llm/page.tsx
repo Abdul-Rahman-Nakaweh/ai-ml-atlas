@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { InfoCallout } from "@/components/InfoCallout";
 
 export const metadata = {
@@ -85,7 +86,16 @@ export default function LLMPage() {
 
       <section className="section-padding">
         <PageContainer>
-          <InfoCallout variant="info" title="Same foundations, different scale">
+          <PageIntro
+            title="Apply: LLMs & Modern AI"
+            what="Tokens, attention, transformers, RAG, agents, hallucinations, and deployment caveats."
+            why="Gen 3 builds on data, optimization, and evaluation—but at scale with new risks."
+            next={[
+              { label: "Transformers path", href: "/paths#transformers" },
+              { label: "Technique Library", href: "/techniques" },
+            ]}
+          />
+          <InfoCallout variant="info" title="Same foundations, different scale" className="mt-8">
             Modern LLMs still minimize loss on data, use embeddings and matrix math, and require validation—but evaluation is harder and deployment cost is higher. Connect new terms to the Math Foundations and Technique Library pages.
           </InfoCallout>
 

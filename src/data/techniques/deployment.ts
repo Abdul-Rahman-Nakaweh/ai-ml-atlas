@@ -1,6 +1,4 @@
-import type { Technique } from "@/types";
-
-export const deployment: Technique[] = [
+export const deployment = [
   {
     id: "quantization",
     name: "Quantization",

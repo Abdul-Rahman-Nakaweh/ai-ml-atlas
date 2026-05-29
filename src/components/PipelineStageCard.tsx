@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { PipelineStageData } from "@/types";
 
 interface PipelineStageCardProps {
@@ -6,12 +7,12 @@ interface PipelineStageCardProps {
 
 export function PipelineStageCard({ stage }: PipelineStageCardProps) {
   return (
-    <article className="glass-card relative p-5 md:p-6">
-      <div className="absolute -left-3 top-6 hidden h-6 w-6 items-center justify-center rounded-full border-2 border-cyan-500/50 bg-atlas-bg text-xs font-bold text-cyan-400 md:flex">
-        {stage.order}
-      </div>
-      <div className="flex items-start gap-3 md:pl-4">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-sm font-bold text-cyan-400 md:hidden">
+    <article
+      id={stage.id}
+      className="glass-card relative scroll-mt-24 p-5 md:p-6"
+    >
+      <div className="flex items-start gap-3">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-sm font-bold text-cyan-400">
           {stage.order}
         </span>
         <div className="min-w-0 flex-1">
@@ -21,11 +22,38 @@ export function PipelineStageCard({ stage }: PipelineStageCardProps) {
             <span className="font-medium text-violet-400/90">Why it matters: </span>
             <span className="text-slate-300">{stage.whyItMatters}</span>
           </p>
+
+          {(stage.comesBefore || stage.comesAfter) && (
+            <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-500">
+              {stage.comesBefore && (
+                <span>
+                  <span className="text-slate-400">Before: </span>
+                  {stage.comesBefore}
+                </span>
+              )}
+              {stage.comesAfter && (
+                <span>
+                  <span className="text-slate-400">After: </span>
+                  {stage.comesAfter}
+                </span>
+              )}
+            </div>
+          )}
+
           <div className="mt-4">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Techniques
+              Techniques in this stage
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
+              {stage.techniqueIds?.map((tid) => (
+                <Link
+                  key={tid}
+                  href={`/techniques#${tid}`}
+                  className="rounded-md bg-cyan-500/10 px-2 py-0.5 text-xs text-cyan-300/90 hover:bg-cyan-500/20"
+                >
+                  {tid.replace(/-/g, " ")}
+                </Link>
+              ))}
               {stage.techniques.map((t) => (
                 <span
                   key={t}
@@ -36,6 +64,7 @@ export function PipelineStageCard({ stage }: PipelineStageCardProps) {
               ))}
             </div>
           </div>
+
           <div className="mt-4">
             <p className="text-xs font-semibold uppercase tracking-wider text-amber-500/80">
               Common mistakes
@@ -46,6 +75,10 @@ export function PipelineStageCard({ stage }: PipelineStageCardProps) {
               ))}
             </ul>
           </div>
+
+          <p className="mt-3 text-xs text-slate-500">
+            Related: {stage.relatedConcepts.join(" · ")}
+          </p>
         </div>
       </div>
     </article>

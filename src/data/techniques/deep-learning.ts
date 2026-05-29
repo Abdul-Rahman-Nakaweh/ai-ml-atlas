@@ -1,6 +1,4 @@
-import type { Technique } from "@/types";
-
-export const deepLearning: Technique[] = [
+export const deepLearning = [
   {
     id: "neural-network",
     name: "Neural Network",

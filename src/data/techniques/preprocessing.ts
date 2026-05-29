@@ -1,6 +1,4 @@
-import type { Technique } from "@/types";
-
-export const preprocessing: Technique[] = [
+export const preprocessing = [
   {
     id: "standardization",
     name: "Standardization",
@@ -112,7 +110,7 @@ export const preprocessing: Technique[] = [
     name: "Data Leakage",
     shortDescription: "When information from outside the training set improperly influences training or preprocessing.",
     generation: "Cross-generation",
-    pipelineStage: ["Validation Strategy", "Preprocessing"],
+    pipelineStage: ["Validation", "Preprocessing"],
     purpose: "Validation",
     mathFoundation: "Statistics",
     strengths: ["Awareness prevents falsely optimistic metrics"],

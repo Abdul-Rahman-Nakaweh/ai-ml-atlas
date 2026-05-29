@@ -14,7 +14,7 @@ export type PipelineStage =
   | "Model Selection"
   | "Training"
   | "Hyperparameter Tuning"
-  | "Validation Strategy"
+  | "Validation"
   | "Evaluation"
   | "Optimization / Compression"
   | "Deployment"
@@ -47,21 +47,53 @@ export type MathFoundation =
   | "Attention"
   | "General";
 
+export type Difficulty = "Beginner" | "Intermediate" | "Advanced";
+
+export type ConceptType =
+  | "Algorithm"
+  | "Metric"
+  | "Preprocessing"
+  | "Tuning"
+  | "Deployment"
+  | "Math"
+  | "LLM Concept"
+  | "General";
+
+export type DeploymentRelevance = "None" | "Low" | "Medium" | "High";
+
+/** Full technique card — add entries in src/data/techniques/ */
 export interface Technique {
   id: string;
   name: string;
-  shortDescription: string;
+  category?: string;
   generation: Generation;
   pipelineStage: PipelineStage | PipelineStage[];
   purpose: Purpose | Purpose[];
   mathFoundation: MathFoundation | MathFoundation[];
+  difficulty: Difficulty;
+  conceptType: ConceptType;
+  deploymentRelevance: DeploymentRelevance;
+  quickExplanation: string;
+  intuition: string;
+  technicalExplanation?: string;
+  mathIdea?: string;
+  whenToUse: string;
+  whenToAvoid: string;
   strengths: string[];
   limitations: string[];
-  whenToUse: string;
-  whenNotToUse: string;
-  tradeOffs: string;
+  mainTradeoff: string;
+  commonMistakes: string[];
   relatedConcepts: string[];
+  learnBefore: string[];
+  learnAfter: string[];
   deploymentNotes?: string;
+}
+
+/** @deprecated Legacy fields — normalized automatically in techniques/index.ts */
+export interface LegacyTechniqueFields {
+  shortDescription?: string;
+  whenNotToUse?: string;
+  tradeOffs?: string;
 }
 
 export interface GlossaryEntry {
@@ -71,6 +103,8 @@ export interface GlossaryEntry {
   simpleExplanation: string;
   whereItFits: string;
   relatedConcepts: string[];
+  /** Link to technique library id when available */
+  techniqueId?: string;
 }
 
 export interface PipelineStageData {
@@ -80,8 +114,11 @@ export interface PipelineStageData {
   description: string;
   whyItMatters: string;
   techniques: string[];
+  techniqueIds?: string[];
   commonMistakes: string[];
   relatedConcepts: string[];
+  comesBefore?: string;
+  comesAfter?: string;
 }
 
 export interface GenerationData {
@@ -102,9 +139,55 @@ export interface MathFoundationData {
   description: string;
   usedIn: string[];
   intuition: string;
+  relatedTechniqueIds?: string[];
 }
 
 export interface AcronymMapping {
   technique: string;
+  techniqueId?: string;
   math: string;
+}
+
+/** Add paths in src/data/learningPaths.ts */
+export interface LearningPath {
+  id: string;
+  title: string;
+  goal: string;
+  audience: string;
+  sequence: { label: string; techniqueId?: string; href?: string }[];
+  prerequisites: string[];
+  commonMistakes: string[];
+  relatedPathIds: string[];
+  relatedLinks: { label: string; href: string }[];
+  accent: "cyan" | "emerald" | "violet" | "amber";
+}
+
+/** Add guides in src/data/decisionGuides.ts */
+export interface DecisionGuide {
+  id: string;
+  title: string;
+  situation: string;
+  recommended: string[];
+  compareAgainst: string[];
+  avoid: string[];
+  keyMetrics: string[];
+  relatedConcepts: string[];
+}
+
+/** Add mistakes in src/data/commonMistakes.ts */
+export interface CommonMistake {
+  id: string;
+  mistake: string;
+  whyItMatters: string;
+  betterPractice: string;
+  relatedConcepts: string[];
+  techniqueIds?: string[];
+}
+
+export interface ComparisonSection {
+  id: string;
+  title: string;
+  description?: string;
+  headers: string[];
+  rows: { label: string; cells: string[] }[];
 }

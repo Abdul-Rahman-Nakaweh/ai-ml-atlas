@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { SectionHeader } from "@/components/SectionHeader";
 import { InfoCallout } from "@/components/InfoCallout";
 import { mathFoundations, acronymMathMappings } from "@/data/mathFoundations";
@@ -20,13 +21,22 @@ export default function MathPage() {
 
       <section className="section-padding">
         <PageContainer>
-          <InfoCallout variant="tip" title="Intuition over memorization">
+          <PageIntro
+            title="Knowledge map: Math Foundations"
+            what="Vectors through attention—linked to techniques, not taught as abstract homework."
+            why="Acronyms make sense when you know the math idea each method reuses."
+            next={[
+              { label: "Technique Library", href: "/techniques" },
+              { label: "Math learning path", href: "/paths#math-foundations" },
+            ]}
+          />
+          <InfoCallout variant="tip" title="Intuition over memorization" className="mt-8">
             When a technique is simplified here, treat it as intuition—you should still verify assumptions for your specific problem and dataset.
           </InfoCallout>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {mathFoundations.map((m) => (
-              <article key={m.id} className="glass-card p-5">
+              <article key={m.id} id={m.id} className="glass-card scroll-mt-24 p-5">
                 <h3 className="text-lg font-semibold text-white">{m.name}</h3>
                 <p className="mt-2 text-sm text-slate-400">{m.description}</p>
                 <p className="mt-3 text-sm">

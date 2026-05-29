@@ -1,12 +1,10 @@
-import type { Technique } from "@/types";
-
-export const validation: Technique[] = [
+export const validation = [
   {
     id: "train-test-split",
     name: "Train/Test Split",
     shortDescription: "Partitions data into training and held-out test subsets.",
     generation: "Cross-generation",
-    pipelineStage: "Validation Strategy",
+    pipelineStage: "Validation",
     purpose: "Validation",
     mathFoundation: "Statistics",
     strengths: ["Simple", "Fast", "Clear final evaluation set"],
@@ -21,7 +19,7 @@ export const validation: Technique[] = [
     name: "Cross-Validation",
     shortDescription: "Rotates train/validation folds to average performance estimates.",
     generation: "Cross-generation",
-    pipelineStage: "Validation Strategy",
+    pipelineStage: "Validation",
     purpose: "Validation",
     mathFoundation: "Statistics",
     strengths: ["More stable estimates on limited data", "Uses all samples for training across folds"],
@@ -36,7 +34,7 @@ export const validation: Technique[] = [
     name: "Stratified Cross-Validation",
     shortDescription: "Preserves class proportions in each fold for classification.",
     generation: "Cross-generation",
-    pipelineStage: "Validation Strategy",
+    pipelineStage: "Validation",
     purpose: "Validation",
     mathFoundation: "Statistics",
     strengths: ["Reliable metrics under class imbalance", "Reduces fold variance"],
@@ -51,7 +49,7 @@ export const validation: Technique[] = [
     name: "Nested Cross-Validation",
     shortDescription: "Outer loop for evaluation, inner loop for tuning—reduces optimistic bias.",
     generation: "Cross-generation",
-    pipelineStage: "Validation Strategy",
+    pipelineStage: "Validation",
     purpose: "Validation",
     mathFoundation: "Statistics",
     strengths: ["Unbiased performance estimate when tuning", "Separates tuning from evaluation"],

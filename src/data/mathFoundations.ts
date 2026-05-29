@@ -66,7 +66,7 @@ export const mathFoundations: MathFoundationData[] = [
   },
   {
     id: "calculus",
-    name: "Calculus / Chain Rule",
+    name: "Calculus and the Chain Rule",
     description: "Derivatives and composition rules for computing gradients in deep networks.",
     usedIn: ["Backpropagation", "Custom loss derivatives"],
     intuition: "The chain rule propagates error signals backward through layers.",

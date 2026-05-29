@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/HeroSection";
 import { PageContainer } from "@/components/PageContainer";
+import { PageIntro } from "@/components/PageIntro";
 import { SectionHeader } from "@/components/SectionHeader";
 import { GenerationCard } from "@/components/GenerationCard";
 import { InfoCallout } from "@/components/InfoCallout";
@@ -22,7 +23,16 @@ export default function GenerationsPage() {
 
       <section className="section-padding">
         <PageContainer>
-          <div className="grid gap-8 lg:grid-cols-1">
+          <PageIntro
+            title="Knowledge map: AI Generations"
+            what="Three eras—classical ML, deep networks, transformers—and what changed between them."
+            why="Picking tools by hype instead of generation leads to wrong compute, data, and deployment assumptions."
+            next={[
+              { label: "ML Pipeline", href: "/pipeline" },
+              { label: "Learning Paths", href: "/paths" },
+            ]}
+          />
+          <div className="mt-10 grid gap-8 lg:grid-cols-1">
             {generations.map((gen, i) => (
               <GenerationCard key={gen.id} generation={gen} index={i} />
             ))}

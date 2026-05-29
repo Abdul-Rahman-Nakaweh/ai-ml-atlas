@@ -1,9 +1,10 @@
+import { Suspense } from "react";
 import { HeroSection } from "@/components/HeroSection";
 import { TechniqueLibrary } from "./TechniqueLibrary";
 
 export const metadata = {
   title: "Technique Library | AI/ML Atlas",
-  description: "Searchable library of AI/ML techniques with trade-offs, pipeline placement, and related concepts.",
+  description: "Searchable concept cards with depth levels, filters, and pipeline context.",
 };
 
 export default function TechniquesPage() {
@@ -11,10 +12,12 @@ export default function TechniquesPage() {
     <>
       <HeroSection
         title="Technique Library"
-        subtitle="Searchable concept cards—not a flat glossary."
-        description="Each technique is connected to its generation, pipeline stage, purpose, math foundation, and deployment notes. Click a card to expand full details."
+        subtitle="The library explains—search algorithms, metrics, methods, and LLM concepts."
+        description="Filter by generation, pipeline stage, purpose, math, difficulty, concept type, and deployment relevance. Expand any card for Quick, Intuition, Technical, Math, Practical, and Deploy views."
       />
-      <TechniqueLibrary />
+      <Suspense fallback={<div className="p-8 text-center text-slate-500">Loading library…</div>}>
+        <TechniqueLibrary />
+      </Suspense>
     </>
   );
 }
