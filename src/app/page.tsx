@@ -1,296 +1,173 @@
 import Link from "next/link";
-import {
-  Compass,
-  GitBranch,
-  Library,
-  Cpu,
-  Sparkles,
-  BarChart3,
-  Scale,
-  AlertTriangle,
-  Table2,
-} from "lucide-react";
-import { HeroSection } from "@/components/HeroSection";
+import { ArrowRight, BookOpen, GitCompare, Library, GraduationCap } from "lucide-react";
 import { PageContainer } from "@/components/PageContainer";
-import { SectionHeader } from "@/components/SectionHeader";
-import { FeatureCard } from "@/components/FeatureCard";
-import { LearningPathCard } from "@/components/LearningPathCard";
-import { GenerationCard } from "@/components/GenerationCard";
-import { PipelineTimeline } from "@/components/PipelineTimeline";
-import { TechniqueCard } from "@/components/TechniqueCard";
-import { learningPaths } from "@/data/learningPaths";
-import { generations } from "@/data/generations";
-import { pipelineStages } from "@/data/pipelineStages";
-import { techniques } from "@/data/techniques";
 
-const usageModes = [
-  {
-    title: "Learn by path",
-    desc: "Follow curated sequences from foundations to TinyML or transformers.",
-    href: "/paths",
-  },
-  {
-    title: "Browse by AI generation",
-    desc: "See how classical ML, deep learning, and modern AI relate.",
-    href: "/generations",
-  },
-  {
-    title: "Browse by ML pipeline",
-    desc: "Place every technique in the workflow from problem definition to monitoring.",
-    href: "/pipeline",
-  },
-  {
-    title: "Search techniques & terms",
-    desc: "Open concept cards and glossary entries for depth or quick recall.",
-    href: "/techniques",
-  },
+const sequence = [
+  "Foundations",
+  "AI Generations",
+  "ML Pipeline",
+  "Model Families",
+  "Evaluation",
+  "Optimization",
+  "Deployment",
+  "Modern AI",
 ];
 
-const appliedAreas = [
+const hubs = [
   {
-    title: "Evaluation & Validation",
-    description: "Metrics, splits, leakage, and test discipline.",
-    href: "/evaluation",
-    icon: BarChart3,
-    accent: "cyan" as const,
+    title: "Learn the workflow",
+    description:
+      "A single guided sequence from foundations through pipeline stages, model families, evaluation, optimization, deployment, and modern AI systems.",
+    href: "/learn",
+    icon: GraduationCap,
   },
   {
-    title: "TinyML / Embedded ML",
-    description: "Memory, latency, quantization, and device verification.",
-    href: "/tinyml",
-    icon: Cpu,
-    accent: "emerald" as const,
+    title: "Explore techniques",
+    description:
+      "Reference library of algorithms, metrics, preprocessing methods, and deployment tools with formal definitions and workflow placement.",
+    href: "/library",
+    icon: Library,
   },
   {
-    title: "LLMs & Modern AI",
-    description: "Tokens, attention, RAG, agents, and deployment caveats.",
-    href: "/llm",
-    icon: Sparkles,
-    accent: "violet" as const,
-  },
-  {
-    title: "MLOps / Deployment",
-    description: "Versioning, monitoring, drift, and reliable updates.",
-    href: "/mlops",
-    icon: GitBranch,
-    accent: "amber" as const,
-  },
-];
-
-const decideAreas = [
-  {
-    title: "Decision Guides",
-    description: "Scenario-based recommendations: tabular data, imbalance, TinyML, text, and more.",
+    title: "Compare methods",
+    description:
+      "Decision guides for model selection, evaluation metrics, deployment constraints, common errors, and comparative tables.",
     href: "/guides",
-    icon: Scale,
-    accent: "cyan" as const,
+    icon: GitCompare,
   },
   {
-    title: "Common Mistakes",
-    description: "Validation, metrics, preprocessing, and deployment pitfalls.",
-    href: "/mistakes",
-    icon: AlertTriangle,
-    accent: "amber" as const,
-  },
-  {
-    title: "Comparison Tables",
-    description: "Algorithms, metrics, optimization, and generation comparisons.",
-    href: "/comparisons",
-    icon: Table2,
-    accent: "violet" as const,
+    title: "Review terminology",
+    description:
+      "Concise glossary for acronyms and standard terms, with links to related areas of study.",
+    href: "/glossary",
+    icon: BookOpen,
   },
 ];
 
 export default function HomePage() {
-  const pathPreview = learningPaths.slice(0, 3);
-  const techniquePreview = techniques.filter((t) =>
-    ["linear-regression", "transformer", "cross-validation", "quantization"].includes(t.id)
-  );
-
   return (
     <>
-      <HeroSection
-        title="AI/ML Atlas"
-        subtitle="A practical knowledge map for understanding, comparing, and deploying machine learning techniques."
-        primaryCta={{ label: "Start Here", href: "/start-here" }}
-        secondaryCta={{ label: "Learning Paths", href: "/paths" }}
-      />
-
-      {/* What this atlas is for */}
-      <section className="section-padding border-b border-atlas-border/30">
-        <PageContainer narrow>
-          <SectionHeader
-            title="What this atlas is for"
-            subtitle="AI/ML is filled with acronyms, algorithms, pipeline stages, math ideas, and deployment techniques. This site helps you understand where each concept fits, why it exists, what problem it solves, and what trade-offs it carries—not just what the acronym stands for."
-          />
-          <div className="grid gap-4 sm:grid-cols-3 text-center text-sm">
-            <div className="glass-card p-4">
-              <p className="font-semibold text-cyan-400">Learning Paths</p>
-              <p className="mt-1 text-slate-500">Guided routes</p>
-            </div>
-            <div className="glass-card p-4">
-              <p className="font-semibold text-violet-400">Knowledge Maps</p>
-              <p className="mt-1 text-slate-500">Generations & pipeline</p>
-            </div>
-            <div className="glass-card p-4">
-              <p className="font-semibold text-emerald-400">Concept Cards</p>
-              <p className="mt-1 text-slate-500">Searchable depth</p>
-            </div>
-          </div>
-        </PageContainer>
-      </section>
-
-      {/* How to use */}
-      <section className="section-padding border-b border-atlas-border/30 bg-atlas-surface/20">
-        <PageContainer>
-          <SectionHeader
-            title="How to use the atlas"
-            subtitle="Four modes—pick the one that matches your question."
-          />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {usageModes.map((m) => (
-              <Link
-                key={m.href}
-                href={m.href}
-                className="glass-card block p-4 transition hover:border-cyan-500/40"
-              >
-                <Compass className="h-5 w-5 text-cyan-400" />
-                <h3 className="mt-3 font-semibold text-white">{m.title}</h3>
-                <p className="mt-1 text-sm text-slate-400">{m.desc}</p>
-              </Link>
-            ))}
-          </div>
-          <p className="mt-6 text-center text-sm">
-            <Link href="/how-to-use" className="text-cyan-400 hover:text-cyan-300">
-              Full guide: How to Use the Atlas →
-            </Link>
+      {/* Hero */}
+      <section className="border-b border-atlas-border/30 bg-gradient-to-b from-cyan-500/8 via-transparent to-transparent">
+        <PageContainer className="py-16 md:py-24 max-w-4xl">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+            AI<span className="text-cyan-400">/</span>ML Atlas
+          </h1>
+          <p className="mt-4 text-lg md:text-xl text-slate-300 leading-relaxed">
+            A structured learning atlas for understanding machine learning from fundamentals to
+            deployment.
           </p>
-        </PageContainer>
-      </section>
-
-      {/* Learning paths preview */}
-      <section className="section-padding border-b border-atlas-border/30">
-        <PageContainer>
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
-            <SectionHeader
-              title="Learning Paths"
-              subtitle="Guided sequences—what to learn first and what comes next."
-              className="mb-0"
-            />
-            <Link href="/paths" className="text-sm text-cyan-400 hover:text-cyan-300">
-              All paths →
-            </Link>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {pathPreview.map((path) => (
-              <LearningPathCard key={path.id} path={path} compact />
-            ))}
-          </div>
-        </PageContainer>
-      </section>
-
-      {/* Generations */}
-      <section className="section-padding border-b border-atlas-border/30 bg-atlas-surface/20">
-        <PageContainer>
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
-            <SectionHeader
-              title="AI Generations"
-              subtitle="Gen 1 Classical ML · Gen 2 Deep Networks · Gen 3 Transformers & Modern AI"
-              className="mb-0"
-            />
-            <Link href="/generations" className="text-sm text-cyan-400 hover:text-cyan-300">
-              Compare generations →
-            </Link>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {generations.map((gen, i) => (
-              <GenerationCard key={gen.id} generation={gen} index={i} />
-            ))}
-          </div>
-        </PageContainer>
-      </section>
-
-      {/* Pipeline */}
-      <section className="section-padding border-b border-atlas-border/30">
-        <PageContainer>
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
-            <SectionHeader
-              title="ML Pipeline"
-              subtitle="The backbone—fourteen stages from problem definition to monitoring."
-              className="mb-0"
-            />
-            <Link href="/pipeline" className="text-sm text-cyan-400 hover:text-cyan-300">
-              Full pipeline →
-            </Link>
-          </div>
-          <PipelineTimeline stages={pipelineStages} limit={6} />
-        </PageContainer>
-      </section>
-
-      {/* Technique library */}
-      <section className="section-padding border-b border-atlas-border/30 bg-atlas-surface/20">
-        <PageContainer>
-          <SectionHeader
-            title="Technique Library"
-            subtitle="Search individual algorithms, metrics, preprocessing steps, tuning methods, and LLM concepts. Each card links pipeline stage, generation, math, trade-offs, and depth tabs (Quick → Intuition → Technical → Math → Practical → Deploy)."
-          />
-          <div className="grid gap-4 md:grid-cols-2">
-            {techniquePreview.map((t) => (
-              <TechniqueCard key={t.id} technique={t} />
-            ))}
-          </div>
-          <p className="mt-6 text-center">
+          <p className="mt-6 text-base leading-relaxed text-slate-400 max-w-2xl">
+            AI/ML Atlas is a structured learning system for understanding machine learning
+            concepts by their role in the workflow, mathematical basis, practical use,
+            limitations, and deployment context.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
             <Link
-              href="/techniques"
-              className="inline-flex items-center gap-2 rounded-xl bg-cyan-600/20 border border-cyan-500/30 px-5 py-2.5 text-sm font-medium text-cyan-300 hover:bg-cyan-600/30"
+              href="/learn"
+              className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-6 py-3 text-sm font-semibold text-white hover:bg-cyan-500 transition"
             >
-              <Library className="h-4 w-4" />
-              Browse & filter all techniques
+              Start Learning
+              <ArrowRight className="h-4 w-4" />
             </Link>
+            <Link
+              href="/library"
+              className="inline-flex items-center gap-2 rounded-lg border border-atlas-border px-6 py-3 text-sm font-medium text-slate-300 hover:border-slate-500 hover:text-white transition"
+            >
+              Open Concept Library
+            </Link>
+          </div>
+        </PageContainer>
+      </section>
+
+      {/* Purpose */}
+      <section className="section-padding border-b border-atlas-border/30">
+        <PageContainer className="max-w-3xl">
+          <h2 className="text-2xl font-bold text-white">Purpose</h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-400">
+            Artificial intelligence and machine learning encompass numerous algorithms, acronyms,
+            metrics, and deployment methods. This atlas organizes those concepts into a learning
+            sequence so that each term is understood by its function, context, mathematical basis,
+            and practical constraints.
           </p>
         </PageContainer>
       </section>
 
-      {/* Applied */}
-      <section className="section-padding border-b border-atlas-border/30">
-        <PageContainer>
-          <SectionHeader
-            title="Applied areas"
-            subtitle="Connect concepts to evaluation, edge deployment, modern AI, and production lifecycle."
-          />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {appliedAreas.map((a) => (
-              <FeatureCard key={a.href} {...a} />
+      {/* Learning sequence */}
+      <section className="section-padding border-b border-atlas-border/30 bg-atlas-surface/20">
+        <PageContainer className="max-w-4xl">
+          <h2 className="text-2xl font-bold text-white">Recommended learning sequence</h2>
+          <p className="mt-3 text-slate-400 text-sm">
+            Proceed in order on the Learn page, or use the Library for targeted reference.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-2 text-sm">
+            {sequence.map((step, i) => (
+              <span key={step} className="flex items-center gap-2">
+                {i > 0 && <span className="text-slate-600">→</span>}
+                <span className="rounded-md border border-atlas-border/60 bg-atlas-card/50 px-3 py-1.5 text-slate-300">
+                  {step}
+                </span>
+              </span>
             ))}
           </div>
         </PageContainer>
       </section>
 
-      {/* Decide */}
+      {/* Main hubs - horizontal cards */}
+      <section className="section-padding border-b border-atlas-border/30">
+        <PageContainer className="max-w-4xl space-y-4">
+          <h2 className="text-2xl font-bold text-white mb-8">Main learning hubs</h2>
+          {hubs.map((hub) => (
+            <Link
+              key={hub.href}
+              href={hub.href}
+              className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-atlas-border/50 bg-atlas-surface/30 p-6 md:p-8 transition hover:border-cyan-500/30 hover:bg-atlas-surface/50"
+            >
+              <hub.icon className="h-8 w-8 text-cyan-400 shrink-0" />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-white group-hover:text-cyan-300 transition">
+                  {hub.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">{hub.description}</p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-slate-600 group-hover:text-cyan-400 shrink-0" />
+            </Link>
+          ))}
+          <Link
+            href="/guides#deployment"
+            className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-atlas-border/50 bg-atlas-surface/30 p-6 md:p-8 transition hover:border-cyan-500/30"
+          >
+            <GraduationCap className="h-8 w-8 text-emerald-400 shrink-0" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-white">Apply to deployment</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                Formal guidance for evaluation, embedded systems (TinyML), large language models,
+                and operational lifecycle (MLOps) as extensions of the core workflow.
+              </p>
+            </div>
+            <ArrowRight className="h-5 w-5 text-slate-600 group-hover:text-cyan-400 shrink-0" />
+          </Link>
+        </PageContainer>
+      </section>
+
+      {/* Applied focus */}
       <section className="section-padding">
-        <PageContainer>
-          <SectionHeader
-            title="Decision support"
-            subtitle="Choose methods by scenario—compare options, avoid pitfalls, read comparison tables."
-          />
-          <div className="grid gap-4 sm:grid-cols-3">
-            {decideAreas.map((d) => (
-              <FeatureCard key={d.href} {...d} />
-            ))}
-          </div>
-          <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-            <Link href="/start-here" className="text-slate-400 hover:text-white">
-              New here? Start Here
-            </Link>
-            <span className="text-slate-700">·</span>
-            <Link href="/math" className="text-slate-400 hover:text-white">
-              Math Foundations
-            </Link>
-            <span className="text-slate-700">·</span>
-            <Link href="/glossary" className="text-slate-400 hover:text-white">
-              Glossary
-            </Link>
-          </div>
+        <PageContainer className="max-w-3xl">
+          <h2 className="text-2xl font-bold text-white">Applied extensions</h2>
+          <p className="mt-4 text-base leading-relaxed text-slate-400">
+            The core Learn sequence establishes general principles. Applied topics extend those
+            principles under additional constraints:{" "}
+            <Link href="/learn#tinyml" className="text-cyan-400 hover:underline">
+              TinyML and embedded AI
+            </Link>{" "}
+            address microcontroller limits;{" "}
+            <Link href="/learn#modern-ai" className="text-cyan-400 hover:underline">
+              modern AI and LLMs
+            </Link>{" "}
+            address large-scale language and retrieval systems; evaluation and deployment guides
+            formalize metric selection and verification. These are integrated chapters, not
+            isolated topics.
+          </p>
         </PageContainer>
       </section>
     </>
