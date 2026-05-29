@@ -1,0 +1,96 @@
+import type { AcronymMapping, MathFoundationData } from "@/types";
+
+export const mathFoundations: MathFoundationData[] = [
+  {
+    id: "vectors",
+    name: "Vectors",
+    description: "Ordered lists of numbers representing features, embeddings, or model weights.",
+    usedIn: ["Feature vectors", "Embeddings", "Weight updates", "Similarity search"],
+    intuition: "Each dimension captures one aspect of an object; direction and length matter for similarity.",
+  },
+  {
+    id: "matrices",
+    name: "Matrices",
+    description: "Tables of numbers representing datasets, layer weights, or transformations.",
+    usedIn: ["Neural network layers", "Attention", "Batch processing", "PCA"],
+    intuition: "Matrix multiplication combines inputs with learned weights to produce new representations.",
+  },
+  {
+    id: "probability",
+    name: "Probability",
+    description: "Quantifies uncertainty and likelihood of outcomes.",
+    usedIn: ["Classification", "Naive Bayes", "Logistic Regression", "Evaluation under uncertainty"],
+    intuition: "Models often output probabilities; decisions depend on thresholds and costs.",
+  },
+  {
+    id: "statistics",
+    name: "Statistics",
+    description: "Summarizes distributions, variance, sampling, and population behavior from data.",
+    usedIn: ["Validation", "Bias-variance analysis", "Normalization", "Hypothesis checks"],
+    intuition: "Sample statistics estimate population behavior; variance reveals stability.",
+  },
+  {
+    id: "loss-functions",
+    name: "Loss Functions",
+    description: "Scalar measures of how wrong predictions are compared to targets.",
+    usedIn: ["Training", "Model comparison", "Calibration"],
+    intuition: "Optimization pushes parameters to reduce average loss on training data.",
+  },
+  {
+    id: "gradients",
+    name: "Gradients",
+    description: "Directional derivatives showing how to change parameters to reduce loss.",
+    usedIn: ["Gradient Descent", "Backpropagation", "Neural network training"],
+    intuition: "Follow the negative gradient to move parameters toward lower error.",
+  },
+  {
+    id: "optimization",
+    name: "Optimization",
+    description: "Algorithms that find parameter values minimizing loss subject to constraints.",
+    usedIn: ["SGD", "Adam", "Hyperparameter search", "Convex and non-convex problems"],
+    intuition: "Most ML training is iterative improvement rather than closed-form solution.",
+  },
+  {
+    id: "distance",
+    name: "Distance Metrics",
+    description: "Measures of similarity or dissimilarity between points or vectors.",
+    usedIn: ["k-NN", "Clustering", "Embeddings", "Vector databases"],
+    intuition: "Closer points in feature space are assumed more similar for many algorithms.",
+  },
+  {
+    id: "linear-algebra",
+    name: "Linear Algebra",
+    description: "Study of vectors, matrices, eigenvalues, and linear transformations.",
+    usedIn: ["PCA", "Neural networks", "SVM", "Attention"],
+    intuition: "Many models are sequences of linear transforms separated by nonlinear activations.",
+  },
+  {
+    id: "calculus",
+    name: "Calculus / Chain Rule",
+    description: "Derivatives and composition rules for computing gradients in deep networks.",
+    usedIn: ["Backpropagation", "Custom loss derivatives"],
+    intuition: "The chain rule propagates error signals backward through layers.",
+  },
+  {
+    id: "attention",
+    name: "Attention Mechanisms",
+    description: "Learned weighting of relationships between elements in a sequence or set.",
+    usedIn: ["Transformers", "Self-attention", "Cross-attention", "ViT"],
+    intuition: "Each token can focus on the most relevant other tokens when forming its representation.",
+  },
+];
+
+export const acronymMathMappings: AcronymMapping[] = [
+  { technique: "Linear Regression", math: "Least squares, line fitting, loss minimization" },
+  { technique: "Logistic Regression", math: "Sigmoid function, probability, cross-entropy" },
+  { technique: "SVM", math: "Separating hyperplane and margin maximization" },
+  { technique: "k-NN", math: "Distance metrics (Euclidean, Manhattan, etc.)" },
+  { technique: "Decision Tree", math: "Splits, impurity (Gini/entropy), information gain" },
+  { technique: "Random Forest", math: "Ensemble averaging and majority voting" },
+  { technique: "Neural Networks", math: "Weighted sums, activations, gradients" },
+  { technique: "CNNs", math: "Convolution, filters, spatial locality" },
+  { technique: "RNNs/LSTMs", math: "Recurrence, gates, sequential state" },
+  { technique: "Transformers", math: "Attention, embeddings, matrix multiplication" },
+  { technique: "PCA", math: "Eigenvectors, variance, orthogonal projection" },
+  { technique: "Quantization", math: "Precision, number representation, memory reduction" },
+];
