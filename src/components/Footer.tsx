@@ -14,9 +14,8 @@ export function Footer() {
           </div>
           <nav className="flex flex-wrap gap-6 text-sm text-slate-400">
             <Link href="/learn" className="hover:text-cyan-400">Learn</Link>
-            <Link href="/library" className="hover:text-cyan-400">Library</Link>
+            <Link href="/library" className="hover:text-cyan-400">Concept Library</Link>
             <Link href="/guides" className="hover:text-cyan-400">Guides</Link>
-            <Link href="/glossary" className="hover:text-cyan-400">Glossary</Link>
           </nav>
         </div>
       </PageContainer>

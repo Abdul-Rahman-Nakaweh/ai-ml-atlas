@@ -27,7 +27,7 @@ export function FormalConceptPanel({ concept }: FormalConceptPanelProps) {
           href={`/library#${concept.id}`}
           className="mt-1 inline-block text-xs text-cyan-500/90 hover:text-cyan-400"
         >
-          Reference entry in Library →
+          Open in Concept Library →
         </Link>
       </header>
       <div className="px-6 py-5 space-y-5">

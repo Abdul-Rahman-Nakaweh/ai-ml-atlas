@@ -171,10 +171,10 @@ export function TechniqueCard({ technique, defaultExpanded }: TechniqueCardProps
           </p>
 
           <Link
-            href="/glossary"
+            href="/library"
             className="mt-3 inline-block text-xs text-cyan-500/80 hover:text-cyan-400"
           >
-            Check glossary for acronyms →
+            Open in Concept Library →
           </Link>
         </div>
       )}

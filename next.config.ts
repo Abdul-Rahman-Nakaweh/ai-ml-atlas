@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
       { source: "/mlops", destination: "/learn#deployment", permanent: true },
       { source: "/mistakes", destination: "/guides#common-errors", permanent: true },
       { source: "/comparisons", destination: "/guides#comparisons", permanent: true },
+      { source: "/glossary", destination: "/library", permanent: true },
+      { source: "/glossary/:path*", destination: "/library", permanent: true },
     ];
   },
 };

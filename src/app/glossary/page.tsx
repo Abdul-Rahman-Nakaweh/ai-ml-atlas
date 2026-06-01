@@ -1,11 +1,6 @@
-import { GlossarySearch } from "./GlossarySearch";
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "Glossary | AI/ML Atlas",
-  description:
-    "Formal AI/ML terminology for quick recall and structured study with workflow context and distinctions.",
-};
-
+/** Compatibility route — glossary merged into Concept Library */
 export default function GlossaryPage() {
-  return <GlossarySearch />;
+  redirect("/library");
 }

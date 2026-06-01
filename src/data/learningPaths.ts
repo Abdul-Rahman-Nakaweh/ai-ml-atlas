@@ -8,9 +8,9 @@ export const learningPaths: LearningPath[] = [
     goal: "Understand features, labels, datasets, models, training, testing, loss, and evaluation.",
     audience: "New to ML; comfortable with basic math and spreadsheets or Python.",
     sequence: [
-      { label: "What is ML?", href: "/glossary#ml" },
-      { label: "Features and labels", techniqueId: "feature", href: "/glossary" },
-      { label: "Training vs inference", href: "/glossary#training" },
+      { label: "What is ML?", href: "/library#ml" },
+      { label: "Features and labels", techniqueId: "feature", href: "/library#feature" },
+      { label: "Training vs inference", href: "/library#training" },
       { label: "Train/test split", techniqueId: "train-test-split" },
       { label: "Basic evaluation metrics", techniqueId: "accuracy" },
       { label: "Overfitting and underfitting", techniqueId: "overfitting" },
@@ -24,7 +24,7 @@ export const learningPaths: LearningPath[] = [
     relatedPathIds: ["classical-ml", "evaluation"],
     relatedLinks: [
       { label: "ML Pipeline", href: "/pipeline" },
-      { label: "Glossary", href: "/glossary" },
+      { label: "Concept Library", href: "/library" },
     ],
     accent: "cyan",
   },
@@ -114,7 +114,7 @@ export const learningPaths: LearningPath[] = [
     audience: "Anyone training or deploying models who needs honest performance estimates.",
     sequence: [
       { label: "Train/test split", techniqueId: "train-test-split" },
-      { label: "Validation set", href: "/glossary#validation" },
+      { label: "Validation set", href: "/library#validation" },
       { label: "Cross-validation", techniqueId: "cross-validation" },
       { label: "Nested cross-validation", techniqueId: "nested-cv" },
       { label: "Confusion matrix", techniqueId: "confusion-matrix" },

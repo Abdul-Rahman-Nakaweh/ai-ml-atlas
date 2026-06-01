@@ -22,9 +22,9 @@ const hubs = [
     icon: GraduationCap,
   },
   {
-    title: "Explore techniques",
+    title: "Concept Library",
     description:
-      "Reference library of algorithms, metrics, preprocessing methods, and deployment tools with formal definitions and workflow placement.",
+      "Searchable reference for algorithms, metrics, preprocessing, validation, deployment, and modern AI—with workflow context and related concepts.",
     href: "/library",
     icon: Library,
   },
@@ -36,10 +36,10 @@ const hubs = [
     icon: GitCompare,
   },
   {
-    title: "Review terminology",
+    title: "Lookup and connect concepts",
     description:
-      "Concise glossary for acronyms and standard terms, with links to related areas of study.",
-    href: "/glossary",
+      "Quick recall and deeper entries for individual terms, with learn-before and learn-after links.",
+    href: "/library",
     icon: BookOpen,
   },
 ];
@@ -98,7 +98,7 @@ export default function HomePage() {
         <PageContainer className="max-w-4xl">
           <h2 className="text-2xl font-bold text-white">Recommended learning sequence</h2>
           <p className="mt-3 text-slate-400 text-sm">
-            Proceed in order on the Learn page, or use the Library for targeted reference.
+            Proceed in order on the Learn page, or use the Concept Library for targeted reference.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-2 text-sm">
             {sequence.map((step, i) => (

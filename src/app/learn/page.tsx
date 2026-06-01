@@ -30,7 +30,7 @@ export default function LearnPage() {
           <p className="mt-4 text-sm text-slate-500">
             For reference lookup of individual algorithms and metrics, use the{" "}
             <Link href="/library" className="text-cyan-400 hover:text-cyan-300">
-              Library
+              Concept Library
             </Link>
             .
           </p>
