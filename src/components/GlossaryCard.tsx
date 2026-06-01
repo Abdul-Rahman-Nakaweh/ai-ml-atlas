@@ -1,15 +1,15 @@
 import type { GlossaryEntry } from "@/types";
-import { GlossaryEntryDetail } from "./GlossaryEntryDetail";
+import { GlossaryDetailPanel } from "./glossary/GlossaryDetailPanel";
 
 interface GlossaryCardProps {
   entry: GlossaryEntry;
+  onSelectTerm?: (id: string) => void;
 }
 
-/** Compact wrapper — renders the same expandable entry as the glossary page */
-export function GlossaryCard({ entry }: GlossaryCardProps) {
+export function GlossaryCard({ entry, onSelectTerm = () => {} }: GlossaryCardProps) {
   return (
-    <div className="glass-card p-2">
-      <GlossaryEntryDetail entry={entry} />
+    <div className="glass-card p-1">
+      <GlossaryDetailPanel entry={entry} onSelectTerm={onSelectTerm} />
     </div>
   );
 }

@@ -96,20 +96,44 @@ export interface LegacyTechniqueFields {
   tradeOffs?: string;
 }
 
+export type GlossaryCategory =
+  | "Foundations"
+  | "Data & Features"
+  | "Models"
+  | "Evaluation"
+  | "Optimization & Deployment"
+  | "Modern AI";
+
+export type GlossaryPipelineStage =
+  | "Problem Definition"
+  | "Data"
+  | "Preprocessing"
+  | "Features"
+  | "Training"
+  | "Validation"
+  | "Evaluation"
+  | "Deployment"
+  | "Cross-cutting";
+
+export type GlossaryDifficulty = "Introductory" | "Intermediate" | "Advanced";
+
 export interface GlossaryEntry {
   id: string;
   term: string;
   fullName?: string;
-  definition: string;
-  locationInWorkflow: string;
-  /** What the term does or which problem it addresses (labeled "Function" in UI) */
-  functionRole: string;
-  technicalBasis: string;
-  practicalExample: string;
+  /** One-sentence preview for the compact index */
+  summary: string;
+  category: GlossaryCategory;
+  pipelineStage: GlossaryPipelineStage;
+  difficulty: GlossaryDifficulty;
+  coreMeaning: string;
+  workflowLocation: string;
+  mechanism: string;
+  example: string;
   commonDistinction: string;
-  limitations: string;
-  relatedTerms: string[];
-  /** Link to technique library id when available */
+  limitation: string;
+  /** Glossary entry ids for clickable related chips */
+  relatedConcepts: string[];
   techniqueId?: string;
 }
 
