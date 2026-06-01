@@ -1,6 +1,7 @@
 import type { LearnBlock, LearnChapter } from "@/types/learn";
 import { FormalConceptPanel } from "./FormalConceptPanel";
 import { ComparisonTable } from "./ComparisonTable";
+import { InfoCallout } from "./InfoCallout";
 
 function Block({ block }: { block: LearnBlock }) {
   switch (block.type) {
@@ -32,6 +33,12 @@ function Block({ block }: { block: LearnBlock }) {
       return block.headers && block.rows ? (
         <ComparisonTable headers={block.headers} rows={block.rows} />
       ) : null;
+    case "callout":
+      return (
+        <InfoCallout title={block.title} variant={block.variant ?? "info"}>
+          {block.content}
+        </InfoCallout>
+      );
     default:
       return null;
   }

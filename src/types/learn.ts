@@ -14,13 +14,15 @@ export interface FormalConcept {
 }
 
 export interface LearnBlock {
-  type: "paragraph" | "list" | "concept" | "table";
+  type: "paragraph" | "list" | "concept" | "table" | "callout";
   content?: string;
   title?: string;
   items?: string[];
   concept?: FormalConcept;
   headers?: string[];
   rows?: { label: string; cells: string[] }[];
+  /** For callout blocks only */
+  variant?: "info" | "warning" | "tip";
 }
 
 export interface LearnSubsection {
@@ -38,13 +40,12 @@ export interface LearnChapter {
 }
 
 export const learnToc = [
-  { id: "foundations", label: "Foundations" },
+  { id: "foundations", label: "Foundations of AI/ML" },
   { id: "generations", label: "AI Generations" },
-  { id: "pipeline", label: "ML Pipeline" },
-  { id: "models", label: "Models and Techniques" },
-  { id: "evaluation", label: "Evaluation" },
-  { id: "optimization", label: "Optimization" },
-  { id: "deployment", label: "Deployment" },
-  { id: "modern-ai", label: "Modern AI" },
-  { id: "tinyml", label: "TinyML" },
+  { id: "pipeline", label: "The ML Pipeline" },
+  { id: "models", label: "Model Families" },
+  { id: "evaluation", label: "Evaluation and Validation" },
+  { id: "optimization", label: "Optimization and Deployment" },
+  { id: "modern-ai", label: "Modern AI and LLMs" },
+  { id: "tinyml", label: "TinyML and Embedded AI" },
 ] as const;
