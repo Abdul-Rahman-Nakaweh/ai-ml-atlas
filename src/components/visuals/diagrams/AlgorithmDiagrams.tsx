@@ -1,5 +1,4 @@
-import { VisualFigure, visualColors as c } from "../shared";
-import { DiagramSvg } from "./DiagramSvg";
+import { VisualFigure, visualColors as c, DiagramSvg } from "../shared";
 
 const font = "system-ui, sans-serif";
 
@@ -52,10 +51,10 @@ export function LogisticRegressionDiagram({ caption }: { caption?: string }) {
           stroke={c.accent}
           strokeWidth={2}
         />
-        <text x={36} y={56} fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={32} y={32} textAnchor="end" fill={c.text} fontSize={7} fontFamily={font}>
           1
         </text>
-        <text x={36} y={100} fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={32} y={100} textAnchor="end" fill={c.text} fontSize={7} fontFamily={font}>
           0
         </text>
         <text x={110} y={16} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>

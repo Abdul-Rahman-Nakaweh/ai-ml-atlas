@@ -1,9 +1,11 @@
-import { VisualFigure, visualColors as c } from "../shared";
-import { DiagramSvg } from "./DiagramSvg";
+import { VisualFigure, visualColors as c, DiagramSvg } from "../shared";
 
 const font = "system-ui, sans-serif";
 
 export function StandardizationDiagram({ caption }: { caption?: string }) {
+  const beforeCx = 70;
+  const afterCx = 210;
+
   return (
     <VisualFigure
       caption={
@@ -12,23 +14,39 @@ export function StandardizationDiagram({ caption }: { caption?: string }) {
       }
       title="Feature standardization"
     >
-      <DiagramSvg viewBox="0 0 280 120" minWidth={240}>
-        <line x1={40} y1={88} x2={240} y2={88} stroke={c.grid} strokeWidth={1} />
-        <line x1={140} y1={24} x2={140} y2={96} stroke={c.positive} strokeWidth={1} strokeDasharray="3 2" />
-        <text x={140} y={18} textAnchor="middle" fill={c.positive} fontSize={8} fontFamily={font}>
-          μ = 0
+      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
+        <line x1={140} y1={20} x2={140} y2={100} stroke={c.grid} strokeWidth={1} />
+
+        <text x={beforeCx} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          Before
         </text>
+        <line x1={24} y1={88} x2={116} y2={88} stroke={c.grid} strokeWidth={1} />
         <path
-          d="M 60 88 Q 100 88 120 60 Q 140 32 160 60 Q 180 88 220 88"
+          d="M 28 88 Q 52 88 64 52 Q 76 28 88 52 Q 100 76 112 88"
           fill={c.accentDim}
           stroke={c.accent}
           strokeWidth={1.5}
         />
-        <text x={70} y={108} fill={c.text} fontSize={7} fontFamily={font}>
-          Before: varied scale
+        <text x={beforeCx} y={108} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Varied scale
         </text>
-        <text x={180} y={108} fill={c.textBright} fontSize={7} fontFamily={font}>
-          After: centered at 0
+
+        <text x={afterCx} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          After
+        </text>
+        <line x1={164} y1={88} x2={256} y2={88} stroke={c.grid} strokeWidth={1} />
+        <line x1={afterCx} y1={32} x2={afterCx} y2={96} stroke={c.positive} strokeWidth={1} strokeDasharray="3 2" />
+        <text x={afterCx} y={26} textAnchor="middle" fill={c.positive} fontSize={8} fontFamily={font}>
+          μ = 0
+        </text>
+        <path
+          d="M 168 88 Q 188 88 198 60 Q 210 32 222 60 Q 234 88 252 88"
+          fill={c.accentDim}
+          stroke={c.accent}
+          strokeWidth={1.5}
+        />
+        <text x={afterCx} y={108} textAnchor="middle" fill={c.textBright} fontSize={7} fontFamily={font}>
+          Centered at 0
         </text>
       </DiagramSvg>
     </VisualFigure>
@@ -36,6 +54,8 @@ export function StandardizationDiagram({ caption }: { caption?: string }) {
 }
 
 export function NormalizationDiagram({ caption }: { caption?: string }) {
+  const barX = 40;
+  const barW = 200;
   return (
     <VisualFigure
       caption={
@@ -44,17 +64,17 @@ export function NormalizationDiagram({ caption }: { caption?: string }) {
       }
       title="Min-max normalization"
     >
-      <DiagramSvg viewBox="0 0 280 120" minWidth={240}>
-        <rect x={40} y={28} width={200} height={56} rx={4} fill={c.grid} fillOpacity={0.3} stroke={c.grid} strokeWidth={1} />
-        <rect x={40} y={52} width={200} height={32} rx={2} fill={c.accentDim} stroke={c.accent} strokeWidth={1.5} />
-        <text x={40} y={22} fill={c.text} fontSize={8} fontFamily={font}>
+      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
+        <rect x={barX} y={28} width={barW} height={56} rx={4} fill={c.grid} fillOpacity={0.3} stroke={c.grid} strokeWidth={1} />
+        <rect x={barX} y={52} width={barW} height={32} rx={2} fill={c.accentDim} stroke={c.accent} strokeWidth={1.5} />
+        <text x={barX} y={22} textAnchor="start" fill={c.text} fontSize={8} fontFamily={font}>
           0
         </text>
-        <text x={232} y={22} fill={c.text} fontSize={8} fontFamily={font}>
+        <text x={barX + barW} y={22} textAnchor="end" fill={c.text} fontSize={8} fontFamily={font}>
           1
         </text>
         {[0.2, 0.45, 0.7, 0.9].map((v, i) => (
-          <circle key={i} cx={40 + v * 200} cy={68} r={5} fill={c.positive} stroke={c.textBright} strokeWidth={1} />
+          <circle key={i} cx={barX + v * barW} cy={68} r={5} fill={c.positive} stroke={c.textBright} strokeWidth={1} />
         ))}
         <text x={140} y={108} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           x_norm = (x − min) / (max − min)
@@ -71,6 +91,12 @@ export function OneHotEncodingDiagram({ caption }: { caption?: string }) {
     [0, 1, 0],
     [0, 0, 1],
   ];
+  const catColX = 44;
+  const binStartX = 118;
+  const colW = 36;
+  const headers = ["R", "B", "G"];
+  const binCx = binStartX + (headers.length * colW) / 2;
+
   return (
     <VisualFigure
       caption={
@@ -79,29 +105,29 @@ export function OneHotEncodingDiagram({ caption }: { caption?: string }) {
       }
       title="One-hot encoding"
     >
-      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
+      <DiagramSvg viewBox="0 0 280 132" minWidth={240}>
         <defs>
           <marker id="ohArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
           </marker>
         </defs>
-        <text x={44} y={20} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+        <text x={catColX} y={18} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
           Category
         </text>
         {cats.map((cat, i) => (
           <g key={cat}>
             <rect x={16} y={28 + i * 24} width={56} height={20} rx={3} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
-            <text x={44} y={42 + i * 24} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+            <text x={catColX} y={42 + i * 24} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
               {cat}
             </text>
           </g>
         ))}
-        <path d="M 80 52 L 108 52" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#ohArrow)" />
-        <text x={188} y={20} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+        <path d="M 76 52 L 96 52" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#ohArrow)" />
+        <text x={binCx} y={10} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
           Binary columns
         </text>
-        {["R", "B", "G"].map((h, hi) => (
-          <text key={h} x={132 + hi * 36} y={20} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        {headers.map((h, hi) => (
+          <text key={h} x={binStartX + hi * colW + colW / 2} y={22} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
             {h}
           </text>
         ))}
@@ -109,9 +135,9 @@ export function OneHotEncodingDiagram({ caption }: { caption?: string }) {
           row.map((val, ci) => (
             <g key={`${ri}-${ci}`}>
               <rect
-                x={116 + ci * 36}
+                x={binStartX + ci * colW}
                 y={28 + ri * 24}
-                width={32}
+                width={colW - 4}
                 height={20}
                 rx={2}
                 fill={val ? c.positiveDim : "transparent"}
@@ -119,7 +145,7 @@ export function OneHotEncodingDiagram({ caption }: { caption?: string }) {
                 strokeWidth={0.75}
               />
               <text
-                x={132 + ci * 36}
+                x={binStartX + ci * colW + (colW - 4) / 2}
                 y={42 + ri * 24}
                 textAnchor="middle"
                 fill={val ? c.positive : c.neutral}
@@ -131,7 +157,7 @@ export function OneHotEncodingDiagram({ caption }: { caption?: string }) {
             </g>
           ))
         )}
-        <text x={140} y={116} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={140} y={118} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           One active bit per category
         </text>
       </DiagramSvg>
@@ -140,6 +166,22 @@ export function OneHotEncodingDiagram({ caption }: { caption?: string }) {
 }
 
 export function FeatureSelectionExtractionDiagram({ caption }: { caption?: string }) {
+  const selBarW = 14;
+  const selGap = 4;
+  const selCount = 5;
+  const selGroupW = selCount * selBarW + (selCount - 1) * selGap;
+  const selCx = 72;
+
+  const inBarW = 10;
+  const inGap = 2;
+  const inCount = 5;
+  const inGroupW = inCount * inBarW + (inCount - 1) * inGap;
+  const outBarW = 14;
+  const outGap = 4;
+  const outCount = 2;
+  const extCx = 228;
+  const inStartX = extCx - (inGroupW + 20 + outCount * outBarW + (outCount - 1) * outGap) / 2;
+
   return (
     <VisualFigure
       caption={
@@ -148,16 +190,21 @@ export function FeatureSelectionExtractionDiagram({ caption }: { caption?: strin
       }
       title="Feature selection versus extraction"
     >
-      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
-        <text x={70} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+      <DiagramSvg viewBox="0 0 300 136" minWidth={260}>
+        <defs>
+          <marker id="feArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
+          </marker>
+        </defs>
+        <text x={selCx} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Selection
         </text>
-        {[0, 1, 2, 3, 4].map((i) => (
+        {Array.from({ length: selCount }).map((_, i) => (
           <rect
             key={`s-${i}`}
-            x={24 + i * 18}
+            x={selCx - selGroupW / 2 + i * (selBarW + selGap)}
             y={28}
-            width={14}
+            width={selBarW}
             height={36}
             rx={2}
             fill={i % 2 === 0 ? c.positiveDim : c.grid}
@@ -166,27 +213,38 @@ export function FeatureSelectionExtractionDiagram({ caption }: { caption?: strin
             strokeWidth={0.75}
           />
         ))}
-        <text x={70} y={78} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={selCx} y={78} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Keep subset of originals
         </text>
-        <text x={210} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+
+        <text x={extCx} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Extraction
         </text>
-        {[0, 1, 2, 3, 4].map((i) => (
-          <rect key={`e-in-${i}`} x={164 + i * 12} y={28} width={10} height={36} rx={2} fill={c.accentDim} stroke={c.accent} strokeWidth={0.5} />
+        {Array.from({ length: inCount }).map((_, i) => (
+          <rect
+            key={`e-in-${i}`}
+            x={inStartX + i * (inBarW + inGap)}
+            y={28}
+            width={inBarW}
+            height={36}
+            rx={2}
+            fill={c.accentDim}
+            stroke={c.accent}
+            strokeWidth={0.5}
+          />
         ))}
-        <path d="M 224 46 L 240 46" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#feArrow)" />
-        <defs>
-          <marker id="feArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
-          </marker>
-        </defs>
-        {[0, 1].map((i) => (
+        <path
+          d={`M ${inStartX + inGroupW + 6} 46 L ${inStartX + inGroupW + 22} 46`}
+          stroke={c.arrow}
+          strokeWidth={1.5}
+          markerEnd="url(#feArrow)"
+        />
+        {Array.from({ length: outCount }).map((_, i) => (
           <rect
             key={`e-out-${i}`}
-            x={244 + i * 16}
+            x={inStartX + inGroupW + 26 + i * (outBarW + outGap)}
             y={34}
-            width={14}
+            width={outBarW}
             height={24}
             rx={2}
             fill={c.negativeDim}
@@ -194,10 +252,10 @@ export function FeatureSelectionExtractionDiagram({ caption }: { caption?: strin
             strokeWidth={1}
           />
         ))}
-        <text x={210} y={78} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={extCx} y={78} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Transform → new features
         </text>
-        <text x={140} y={116} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={150} y={118} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Selection reduces columns · Extraction creates them
         </text>
       </DiagramSvg>

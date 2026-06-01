@@ -51,10 +51,15 @@ function filterToLevel(level: string): Concept["difficulty"] | null {
   return null;
 }
 
+function conceptHasVisual(c: Concept) {
+  return !!(c.visualType ?? c.visualAid);
+}
+
 export function ConceptLibraryExplorer() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("All");
   const [level, setLevel] = useState<string>("All");
+  const [visualsOnly, setVisualsOnly] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [generation, setGeneration] = useState("All");
   const [pipeline, setPipeline] = useState("All");
@@ -62,6 +67,11 @@ export function ConceptLibraryExplorer() {
   const [deployment, setDeployment] = useState("All");
   const [mathFoundation, setMathFoundation] = useState("All");
   const [selectedId, setSelectedId] = useState<string | null>(concepts[0]?.id ?? null);
+
+  const visualConceptCount = useMemo(
+    () => concepts.filter(conceptHasVisual).length,
+    []
+  );
 
   const mathOptions = useMemo(() => {
     const set = new Set<string>();
@@ -79,12 +89,14 @@ export function ConceptLibraryExplorer() {
     pipeline !== "All" ||
     purpose !== "All" ||
     deployment !== "All" ||
-    mathFoundation !== "All";
+    mathFoundation !== "All" ||
+    visualsOnly;
 
   const clearFilters = useCallback(() => {
     setSearch("");
     setCategory("All");
     setLevel("All");
+    setVisualsOnly(false);
     setGeneration("All");
     setPipeline("All");
     setPurpose("All");
@@ -104,10 +116,11 @@ export function ConceptLibraryExplorer() {
       if (purpose !== "All" && c.purpose !== purpose) return false;
       if (deployment !== "All" && c.deploymentRelevance !== deployment) return false;
       if (mathFoundation !== "All" && !c.mathFoundation?.includes(mathFoundation)) return false;
+      if (visualsOnly && !conceptHasVisual(c)) return false;
       if (q && !conceptSearchText(c).includes(q)) return false;
       return true;
     });
-  }, [search, category, level, generation, pipeline, purpose, deployment, mathFoundation]);
+  }, [search, category, level, generation, pipeline, purpose, deployment, mathFoundation, visualsOnly]);
 
   useEffect(() => {
     if (filtered.length === 0) {
@@ -198,6 +211,26 @@ export function ConceptLibraryExplorer() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="flex flex-col justify-end">
+            <span className="text-xs font-medium uppercase tracking-wider text-slate-500">
+              Diagram
+            </span>
+            <button
+              type="button"
+              onClick={() => setVisualsOnly((on) => !on)}
+              aria-pressed={visualsOnly}
+              className={cn(
+                "mt-1.5 rounded-lg border px-3 py-2 text-sm whitespace-nowrap transition",
+                visualsOnly
+                  ? "border-cyan-500/50 bg-cyan-500/15 text-cyan-300"
+                  : "border-atlas-border/60 bg-atlas-surface/50 text-slate-200 hover:border-cyan-500/40 hover:text-cyan-200"
+              )}
+            >
+              {visualsOnly ? "With diagram only" : "All concepts"}
+              <span className="ml-1.5 text-xs text-slate-500">({visualConceptCount})</span>
+            </button>
           </div>
 
           {hasActiveFilters && (

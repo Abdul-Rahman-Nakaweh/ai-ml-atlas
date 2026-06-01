@@ -59,6 +59,44 @@ export type ConceptPurpose =
   | "optimization"
   | "general";
 
+/** Breadcrumb segment in the knowledge structure */
+export interface ConceptPathSegment {
+  label: string;
+  /** When set and present in the library, segment is clickable */
+  conceptId?: string;
+}
+
+/** Symbol definition for an equation or formal expression */
+export interface EquationSymbol {
+  symbol: string;
+  meaning: string;
+}
+
+/** One formula block with its own symbol glossary — used for side-by-side comparisons */
+export interface ConceptEquationPart {
+  /** Optional heading (e.g. "ReLU", "Sigmoid") */
+  label?: string;
+  expression: string;
+  /** Symbols scoped to this expression; rendered directly beneath it */
+  symbols?: EquationSymbol[];
+}
+
+/** Equation or formal expression shown in the concept detail panel */
+export interface ConceptEquation {
+  /** Primary expression (plain-text math, readable without a renderer) */
+  expression: string;
+  /** What the expression measures or computes */
+  summary: string;
+  /** How the expression connects to the concept's role in practice */
+  connection: string;
+  /** Symbol glossary for every variable in the expression */
+  symbols: EquationSymbol[];
+  /** When set, each part renders in its own column with symbols aligned beneath that formula */
+  parts?: ConceptEquationPart[];
+  /** Optional note on when the expression applies or should not be used */
+  useCase?: string;
+}
+
 /** Unified concept entry for the Concept Library */
 export interface Concept {
   id: string;
@@ -75,6 +113,8 @@ export interface Concept {
   workflowLocation: string;
   functionRole: string;
   mechanism: string;
+  /** When set, renders the Equation or Formal Expression section */
+  equation?: ConceptEquation;
   example: string;
   commonDistinction: string;
   limitation: string;
@@ -89,4 +129,19 @@ export interface Concept {
   visualType?: VisualAidType;
   /** @deprecated Use visualType */
   visualAid?: VisualAidType;
+
+  /** Hierarchy: where this concept sits in the broader AI/ML knowledge structure */
+  conceptPath?: ConceptPathSegment[];
+  /** Larger concepts this entry belongs under (library concept ids) */
+  broaderConcepts?: string[];
+  /** Smaller ideas or components inside this concept */
+  subtopics?: string[];
+  /** Named methods or practical techniques under this concept */
+  specificTechniques?: string[];
+  /** Alternative forms or types of this concept */
+  variants?: string[];
+  /** Concepts often confused with or compared against this one */
+  commonlyComparedWith?: string[];
+  /** Concepts that naturally follow after learning this one (may overlap learnAfter) */
+  recommendedNext?: string[];
 }

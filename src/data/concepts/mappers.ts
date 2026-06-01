@@ -237,26 +237,42 @@ function buildExample(t: Technique): string {
   return `Applied in a ${purpose.toLowerCase()} workflow where ${t.strengths[0]?.toLowerCase() ?? "the method"} is required.`;
 }
 
+function buildFunctionRole(t: Technique): string {
+  const when = t.whenToUse.trim();
+  if (when.length > 40 && !when.startsWith(t.quickExplanation.slice(0, 30))) {
+    const first = when.split(/[.!?]/)[0]?.trim();
+    if (first && first.length > 30) return first.endsWith(".") ? first : `${first}.`;
+  }
+  const purpose = normalizeArray(t.purpose)[0];
+  return `Addresses ${purpose.toLowerCase()} objectives by applying ${t.name} within the ${normalizeArray(t.pipelineStage)[0] ?? "ML"} stage.`;
+}
+
 export function techniqueToConcept(t: Technique, knownIds: Set<string>): Concept {
   const stages = normalizeArray(t.pipelineStage);
   const math = normalizeArray(t.mathFoundation).map(String);
+  const core = t.quickExplanation.trim();
+  const mechanism =
+    t.mathIdea?.trim() ||
+    t.technicalExplanation?.trim() ||
+    t.intuition.trim() ||
+    `Operates during ${stages.join(" and ")} by applying ${t.name} to the prepared feature representation.`;
   return {
     id: t.id,
     name: t.name,
-    summary: t.quickExplanation,
+    summary: core,
     libraryCategory: "Foundations",
     conceptType: mapConceptTypeFromTechnique(t),
     generation: t.generation as ConceptGeneration,
     pipelineStage: mapPipelineStage(stages),
     difficulty: mapDifficulty(t.difficulty),
     purpose: mapPurpose(t.purpose),
-    coreMeaning: t.quickExplanation,
-    workflowLocation: `Used during ${stages.join(", ")}.`,
-    functionRole: t.whenToUse.split(".")[0]?.trim() + (t.whenToUse.includes(".") ? "." : "") || t.whenToUse,
-    mechanism: t.mathIdea ?? t.technicalExplanation ?? t.intuition,
+    coreMeaning: core,
+    workflowLocation: `Applied during ${stages.join(", ")} in the machine learning pipeline.`,
+    functionRole: buildFunctionRole(t),
+    mechanism,
     example: buildExample(t),
-    commonDistinction: t.whenToAvoid,
-    limitation: t.limitations[0] ?? t.mainTradeoff,
+    commonDistinction: t.whenToAvoid.trim() || `Distinct from related methods listed under Related Concepts; see Common Distinction in linked entries.`,
+    limitation: t.limitations[0]?.trim() || t.mainTradeoff?.trim() || "Performance depends on data quality, validation discipline, and alignment with deployment constraints.",
     learnBefore: resolveConceptIds(t.learnBefore, knownIds),
     learnAfter: resolveConceptIds(t.learnAfter, knownIds),
     relatedConcepts: resolveConceptIds(t.relatedConcepts, knownIds),

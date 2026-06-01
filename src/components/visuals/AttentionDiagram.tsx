@@ -1,9 +1,9 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
 
 const TOKENS = ["The", "model", "uses", "attention"];
 
 export function AttentionDiagram({ caption }: { caption?: string }) {
-  const positions = TOKENS.map((_, i) => ({ x: 50 + i * 55, y: 40 }));
+  const positions = TOKENS.map((_, i) => ({ x: 50 + i * 55, y: 44 }));
 
   return (
     <VisualFigure
@@ -13,7 +13,7 @@ export function AttentionDiagram({ caption }: { caption?: string }) {
       }
       title="Token self-attention weights"
     >
-      <svg viewBox="0 0 320 130" className="w-full min-w-[280px] h-auto" aria-hidden>
+      <DiagramSvg viewBox="0 0 320 136" minWidth={280}>
         {positions.map((from, i) =>
           positions.map((to, j) => {
             if (i === j) return null;
@@ -44,22 +44,15 @@ export function AttentionDiagram({ caption }: { caption?: string }) {
               stroke={i === 2 ? c.accent : c.grid}
               strokeWidth={1}
             />
-            <text
-              x={positions[i].x}
-              y={positions[i].y + 16}
-              textAnchor="middle"
-              fill={c.textBright}
-              fontSize={9}
-              fontFamily="system-ui"
-            >
+            <text x={positions[i].x} y={positions[i].y + 16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
               {tok}
             </text>
           </g>
         ))}
-        <text x={160} y={115} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
+        <text x={160} y={120} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
           Query token attends across the sequence
         </text>
-      </svg>
+      </DiagramSvg>
     </VisualFigure>
   );
 }

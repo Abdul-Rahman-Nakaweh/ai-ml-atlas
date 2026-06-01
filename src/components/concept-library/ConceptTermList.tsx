@@ -57,6 +57,11 @@ export function ConceptTermList({ concepts, selectedId, onSelect }: ConceptTermL
                 <Badge variant="default" className="!px-1.5 !py-0 text-[10px]">
                   {formatDifficultyLabel(concept.difficulty)}
                 </Badge>
+                {(concept.visualType ?? concept.visualAid) && (
+                  <Badge variant="pipeline" className="!px-1.5 !py-0 text-[10px] !border-cyan-500/30 !text-cyan-400/90">
+                    diagram
+                  </Badge>
+                )}
               </div>
             </button>
           </li>

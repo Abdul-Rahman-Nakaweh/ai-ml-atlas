@@ -41,6 +41,7 @@ export type VisualAidType =
   | "rnn-lstm"
   | "backpropagation"
   | "gradient-descent"
+  | "activation-function"
   // Modern AI
   | "tokenization"
   | "embeddings"

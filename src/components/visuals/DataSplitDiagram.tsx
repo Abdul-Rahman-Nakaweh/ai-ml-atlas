@@ -1,4 +1,6 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
+
+const font = "system-ui, sans-serif";
 
 export function DataSplitDiagram({ caption }: { caption?: string }) {
   return (
@@ -9,29 +11,29 @@ export function DataSplitDiagram({ caption }: { caption?: string }) {
       }
       title="Train, validation, and test partitions"
     >
-      <svg viewBox="0 0 360 100" className="w-full min-w-[280px] h-auto" aria-hidden>
-        <rect x={10} y={30} width={200} height={40} rx={6} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
-        <text x={110} y={55} textAnchor="middle" fill={c.textBright} fontSize={11} fontFamily="system-ui">
+      <DiagramSvg viewBox="0 0 360 108" minWidth={280}>
+        <rect x={10} y={24} width={200} height={40} rx={6} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
+        <text x={110} y={49} textAnchor="middle" fill={c.textBright} fontSize={11} fontFamily={font}>
           Training set
         </text>
-        <rect x={220} y={30} width={60} height={40} rx={6} fill={c.negativeDim} stroke={c.negative} strokeWidth={1} />
-        <text x={250} y={55} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
+        <rect x={220} y={24} width={60} height={40} rx={6} fill={c.negativeDim} stroke={c.negative} strokeWidth={1} />
+        <text x={250} y={49} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Val.
         </text>
-        <rect x={290} y={30} width={60} height={40} rx={6} fill={c.positiveDim} stroke={c.positive} strokeWidth={1} />
-        <text x={320} y={55} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
+        <rect x={290} y={24} width={60} height={40} rx={6} fill={c.positiveDim} stroke={c.positive} strokeWidth={1} />
+        <text x={320} y={49} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Test
         </text>
-        <text x={110} y={88} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
+        <text x={110} y={88} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
           Parameter estimation
         </text>
-        <text x={250} y={88} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
+        <text x={250} y={88} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
           Model selection
         </text>
-        <text x={320} y={88} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
+        <text x={320} y={88} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
           Final metric
         </text>
-      </svg>
+      </DiagramSvg>
     </VisualFigure>
   );
 }

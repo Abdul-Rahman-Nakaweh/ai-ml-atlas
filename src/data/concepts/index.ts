@@ -11,6 +11,9 @@ import { conceptOverrides } from "./overrides";
 import { conceptVisualTypes } from "./visualAids";
 import { resolveLibraryCategory } from "./libraryCategories";
 import { LIBRARY_CATEGORIES } from "@/types/concept";
+import { hierarchyHubConcepts } from "./hierarchyHubs";
+import { applyHierarchyPatch } from "./hierarchies";
+import { applyLessonEnrichment } from "./lessonEnrichment";
 
 /** ID aliases: glossary id → canonical concept id */
 const GLOSSARY_ID_ALIAS: Record<string, string> = {
@@ -24,6 +27,7 @@ function buildConceptLibrary(): Concept[] {
     ...techniques.map((t) => t.id),
     ...glossaryEntries.map((e) => GLOSSARY_ID_ALIAS[e.id] ?? e.id),
     ...Object.keys(conceptOverrides),
+    ...hierarchyHubConcepts.map((h) => h.id),
   ]);
   const byId = new Map<string, Concept>();
 
@@ -93,20 +97,31 @@ function buildConceptLibrary(): Concept[] {
     }
   }
 
+  for (const hub of hierarchyHubConcepts) {
+    const existing = byId.get(hub.id);
+    if (existing) {
+      byId.set(hub.id, mergeConcept(existing, hub));
+    } else {
+      byId.set(hub.id, hub);
+    }
+  }
+
   const allIds = new Set(byId.keys());
   return Array.from(byId.values())
     .map((c) => {
       const visualType = c.visualType ?? c.visualAid ?? conceptVisualTypes[c.id];
       const withCategory = { ...c, libraryCategory: resolveLibraryCategory(c) };
+      const withHierarchy = applyHierarchyPatch(withCategory, allIds);
       return {
-        ...withCategory,
+        ...withHierarchy,
         visualType,
         visualAid: visualType,
-        learnBefore: c.learnBefore.filter((id) => allIds.has(id)),
-        learnAfter: c.learnAfter.filter((id) => allIds.has(id)),
-        relatedConcepts: c.relatedConcepts.filter((id) => allIds.has(id)),
+        learnBefore: withHierarchy.learnBefore.filter((id) => allIds.has(id)),
+        learnAfter: withHierarchy.learnAfter.filter((id) => allIds.has(id)),
+        relatedConcepts: withHierarchy.relatedConcepts.filter((id) => allIds.has(id)),
       };
     })
+    .map((c) => applyLessonEnrichment(c))
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
 }
 

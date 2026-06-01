@@ -103,6 +103,19 @@ const CATEGORY_BY_ID: Partial<Record<string, LibraryCategory>> = {
   "hardware-aware-selection": "Deployment and TinyML",
   "deployment-verification": "Deployment and TinyML",
   "loss-function": "Math and Optimization",
+  // Hierarchy hub concepts
+  "evaluation-metrics": "Evaluation Metrics",
+  "feature-methods": "Preprocessing and Features",
+  "classical-ml": "Algorithms",
+  "model-selection": "Validation and Tuning",
+  "deployment-practices": "Deployment and TinyML",
+  "optimization-area": "Deployment and TinyML",
+  "modern-ai": "Modern AI and LLMs",
+  "rag-system": "Modern AI and LLMs",
+  "transformer-architecture": "Modern AI and LLMs",
+  "cross-validation-methods": "Validation and Tuning",
+  "preprocessing-methods": "Preprocessing and Features",
+  "tinyml-system": "Deployment and TinyML",
 };
 
 const DEEP_LEARNING_IDS = new Set([

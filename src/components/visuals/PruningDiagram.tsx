@@ -1,4 +1,46 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
+
+const font = "system-ui, sans-serif";
+
+const NET_W = 80;
+
+export function PruningDiagram({ caption }: { caption?: string }) {
+  const beforeCx = 20 + NET_W / 2;
+  const afterCx = 160 + NET_W / 2;
+
+  return (
+    <VisualFigure
+      caption={
+        caption ??
+        "Pruning removes low-magnitude weights or entire nodes, reducing model size and inference cost with a controlled accuracy trade-off."
+      }
+      title="Network before and after pruning"
+    >
+      <DiagramSvg viewBox="0 0 280 118" minWidth={240}>
+        <text x={beforeCx} y={16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          Before
+        </text>
+        <Network x={20} y={22} pruned={false} />
+        <path d="M 115 58 L 135 58" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#pruneArrow)" />
+        <defs>
+          <marker id="pruneArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
+          </marker>
+        </defs>
+        <text x={afterCx} y={16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          After pruning
+        </text>
+        <Network x={160} y={22} pruned={true} />
+        <text x={beforeCx} y={106} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Dense connections
+        </text>
+        <text x={afterCx} y={106} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Smaller footprint
+        </text>
+      </DiagramSvg>
+    </VisualFigure>
+  );
+}
 
 function Network({ x, y, pruned }: { x: number; y: number; pruned: boolean }) {
   const nodes = [
@@ -19,12 +61,13 @@ function Network({ x, y, pruned }: { x: number; y: number; pruned: boolean }) {
     [3, 5],
     [4, 5],
   ];
-  const prunedEdges = new Set([1, 2, 5]);
+  const prunedEdges = new Set([1, 2, 4, 5]);
 
   return (
     <g transform={`translate(${x}, ${y})`}>
       {edges.map(([a, b], i) => {
-        const dimmed = pruned && prunedEdges.has(i);
+        const removed = pruned && (prunedEdges.has(i) || a === 2 || b === 2);
+        if (removed) return null;
         return (
           <line
             key={i}
@@ -32,10 +75,9 @@ function Network({ x, y, pruned }: { x: number; y: number; pruned: boolean }) {
             y1={nodes[a][1] + 8}
             x2={nodes[b][0]}
             y2={nodes[b][1] + 8}
-            stroke={dimmed ? c.grid : c.accent}
-            strokeWidth={dimmed ? 0.5 : 1.25}
-            opacity={dimmed ? 0.3 : 0.8}
-            strokeDasharray={dimmed ? "2 2" : undefined}
+            stroke={c.accent}
+            strokeWidth={1.25}
+            opacity={0.8}
           />
         );
       })}
@@ -55,37 +97,5 @@ function Network({ x, y, pruned }: { x: number; y: number; pruned: boolean }) {
         );
       })}
     </g>
-  );
-}
-
-export function PruningDiagram({ caption }: { caption?: string }) {
-  return (
-    <VisualFigure
-      caption={
-        caption ??
-        "Pruning removes low-magnitude weights or entire nodes, reducing model size and inference cost with a controlled accuracy trade-off."
-      }
-      title="Network before and after pruning"
-    >
-      <svg viewBox="0 0 280 110" className="w-full min-w-[240px] h-auto" aria-hidden>
-        <text x={50} y={16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
-          Before
-        </text>
-        <Network x={10} y={20} pruned={false} />
-        <path d="M 115 55 L 135 55" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#pruneArrow)" />
-        <defs>
-          <marker id="pruneArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
-          </marker>
-        </defs>
-        <text x={210} y={16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
-          After pruning
-        </text>
-        <Network x={150} y={20} pruned={true} />
-        <text x={140} y={100} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
-          Fewer active connections · smaller footprint
-        </text>
-      </svg>
-    </VisualFigure>
   );
 }

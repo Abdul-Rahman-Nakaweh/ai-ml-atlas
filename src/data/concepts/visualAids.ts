@@ -56,6 +56,7 @@ export const conceptVisualTypes: Partial<Record<string, VisualAidType>> = {
   lstm: "rnn-lstm",
   backpropagation: "backpropagation",
   "gradient-descent": "gradient-descent",
+  "activation-function": "activation-function",
   // Modern AI
   tokenization: "tokenization",
   embeddings: "embeddings",

@@ -1,10 +1,15 @@
-import { VisualFigure, visualColors as c } from "../shared";
-import { DiagramSvg } from "./DiagramSvg";
+import { VisualFigure, visualColors as c, DiagramSvg } from "../shared";
 
 const font = "system-ui, sans-serif";
 
 export function TokenizationDiagram({ caption }: { caption?: string }) {
-  const tokens = ['"The"', '"cat"', '"sat"'];
+  const tokens = ["The", "cat", "sat"];
+  const sentX = 20;
+  const sentW = 100;
+  const sentY = 32;
+  const tokStartX = 148;
+  const tokW = 38;
+  const tokGap = 6;
   return (
     <VisualFigure
       caption={
@@ -13,33 +18,36 @@ export function TokenizationDiagram({ caption }: { caption?: string }) {
       }
       title="Text tokenization"
     >
-      <DiagramSvg viewBox="0 0 280 108" minWidth={240}>
+      <DiagramSvg viewBox="0 0 300 108" minWidth={260}>
         <defs>
           <marker id="tokArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
           </marker>
         </defs>
-        <rect x={16} y={32} width={108} height={36} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1.5} />
-        <text x={70} y={54} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
-          The cat sat
-        </text>
-        <text x={70} y={24} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
+        <text x={sentX + sentW / 2} y={24} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
           Sentence
         </text>
-        <path d="M 130 50 L 158 50" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#tokArrow)" />
-        {tokens.map((tok, i) => (
-          <g key={tok}>
-            <rect x={164 + i * 36} y={32} width={32} height={36} rx={4} fill={c.positiveDim} stroke={c.positive} strokeWidth={1} />
-            <text x={180 + i * 36} y={54} textAnchor="middle" fill={c.textBright} fontSize={7} fontFamily={font}>
-              {tok}
-            </text>
-          </g>
-        ))}
-        <text x={210} y={24} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
+        <rect x={sentX} y={sentY} width={sentW} height={34} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1.5} />
+        <text x={sentX + sentW / 2} y={sentY + 21} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+          The cat sat
+        </text>
+        <path d={`M ${sentX + sentW + 4} ${sentY + 17} L ${tokStartX - 8} ${sentY + 17}`} stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#tokArrow)" />
+        <text x={tokStartX + (tokens.length * tokW + (tokens.length - 1) * tokGap) / 2} y={24} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
           Tokens
         </text>
-        <text x={140} y={92} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
-          Each token maps to an embedding vector
+        {tokens.map((tok, i) => {
+          const x = tokStartX + i * (tokW + tokGap);
+          return (
+            <g key={tok}>
+              <rect x={x} y={sentY} width={tokW} height={34} rx={4} fill={c.positiveDim} stroke={c.positive} strokeWidth={1} />
+              <text x={x + tokW / 2} y={sentY + 21} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+                {tok}
+              </text>
+            </g>
+          );
+        })}
+        <text x={150} y={88} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Each token → embedding vector
         </text>
       </DiagramSvg>
     </VisualFigure>
@@ -48,10 +56,10 @@ export function TokenizationDiagram({ caption }: { caption?: string }) {
 
 export function TransformerBlockDiagram({ caption }: { caption?: string }) {
   const blocks = [
-    { x: 16, label: "Tokens", fill: c.accentDim, stroke: c.accent },
-    { x: 88, label: "Attention", fill: c.positiveDim, stroke: c.positive },
-    { x: 160, label: "FFN", fill: c.negativeDim, stroke: c.negative },
-    { x: 232, label: "Output", fill: c.warn, fillOpacity: 0.15, stroke: c.warn },
+    { x: 12, label: "Tokens", fill: c.accentDim, stroke: c.accent },
+    { x: 78, label: "Attention", fill: c.positiveDim, stroke: c.positive },
+    { x: 144, label: "FFN", fill: c.negativeDim, stroke: c.negative },
+    { x: 210, label: "Output", fill: c.warn, fillOpacity: 0.15, stroke: c.warn },
   ];
   return (
     <VisualFigure
@@ -61,21 +69,24 @@ export function TransformerBlockDiagram({ caption }: { caption?: string }) {
       }
       title="Transformer block"
     >
-      <DiagramSvg viewBox="0 0 296 108" minWidth={260}>
+      <DiagramSvg viewBox="0 0 278 112" minWidth={260}>
         <defs>
           <marker id="txArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
           </marker>
         </defs>
+        <text x={139} y={16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          Self-attention + FFN per layer
+        </text>
         {blocks.map((b, i) => (
           <g key={b.label}>
-            <rect x={b.x} y={32} width={56} height={40} rx={4} fill={b.fill} stroke={b.stroke} strokeWidth={1.5} />
-            <text x={b.x + 28} y={56} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+            <rect x={b.x} y={28} width={54} height={40} rx={4} fill={b.fill} stroke={b.stroke} strokeWidth={1.5} />
+            <text x={b.x + 27} y={52} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
               {b.label}
             </text>
             {i < blocks.length - 1 && (
               <path
-                d={`M ${b.x + 60} 52 L ${blocks[i + 1].x - 4} 52`}
+                d={`M ${b.x + 56} 48 L ${blocks[i + 1].x - 4} 48`}
                 stroke={c.arrow}
                 strokeWidth={1.5}
                 markerEnd="url(#txArrow)"
@@ -83,11 +94,8 @@ export function TransformerBlockDiagram({ caption }: { caption?: string }) {
             )}
           </g>
         ))}
-        <text x={148} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
-          Self-attention + FFN per layer
-        </text>
-        <text x={148} y={96} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
-          Residual connections & layer norm omitted
+        <text x={139} y={96} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Residual connections and layer norm omitted
         </text>
       </DiagramSvg>
     </VisualFigure>
@@ -95,12 +103,14 @@ export function TransformerBlockDiagram({ caption }: { caption?: string }) {
 }
 
 export function VectorDatabaseDiagram({ caption }: { caption?: string }) {
+  const queryX = 36;
+  const queryY = 64;
   const vectors = [
-    { x: 48, y: 36, match: false },
-    { x: 72, y: 52, match: true },
-    { x: 96, y: 44, match: false },
-    { x: 120, y: 60, match: false },
-    { x: 144, y: 48, match: false },
+    { x: 118, y: 38, match: false },
+    { x: 142, y: 54, match: true },
+    { x: 166, y: 46, match: false },
+    { x: 130, y: 68, match: false },
+    { x: 154, y: 72, match: false },
   ];
   return (
     <VisualFigure
@@ -110,34 +120,34 @@ export function VectorDatabaseDiagram({ caption }: { caption?: string }) {
       }
       title="Vector similarity search"
     >
-      <DiagramSvg viewBox="0 0 260 120" minWidth={220}>
-        <circle cx={48} cy={72} r={10} fill={c.accent} stroke={c.textBright} strokeWidth={1.5} />
-        <text x={48} y={76} textAnchor="middle" fill={c.textBright} fontSize={6} fontFamily={font}>
+      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
+        <circle cx={queryX} cy={queryY} r={10} fill={c.accent} stroke={c.textBright} strokeWidth={1.5} />
+        <text x={queryX} y={queryY + 3} textAnchor="middle" fill={c.textBright} fontSize={7} fontFamily={font}>
           q
         </text>
-        <text x={48} y={24} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+        <text x={queryX} y={queryY - 16} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
           Query
         </text>
         {vectors.map((v, i) => (
           <g key={i}>
-            <circle cx={v.x + 80} cy={v.y} r={6} fill={v.match ? c.positiveDim : c.grid} stroke={v.match ? c.positive : c.neutral} strokeWidth={v.match ? 2 : 0.75} />
+            <circle cx={v.x} cy={v.y} r={6} fill={v.match ? c.positiveDim : c.grid} stroke={v.match ? c.positive : c.neutral} strokeWidth={v.match ? 2 : 0.75} />
             {v.match && (
-              <line x1={58} y1={72} x2={v.x + 74} y2={v.y + 4} stroke={c.positive} strokeWidth={1.5} strokeDasharray="3 2" />
+              <line x1={queryX + 10} y1={queryY} x2={v.x - 7} y2={v.y} stroke={c.positive} strokeWidth={1.5} strokeDasharray="3 2" />
             )}
           </g>
         ))}
-        <rect x={168} y={28} width={80} height={64} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
-        <text x={208} y={48} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
+        <rect x={196} y={36} width={72} height={56} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
+        <text x={232} y={56} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
           Vector DB
         </text>
-        <text x={208} y={64} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={232} y={70} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           ANN index
         </text>
-        <text x={208} y={78} textAnchor="middle" fill={c.positive} fontSize={7} fontFamily={font}>
+        <text x={232} y={82} textAnchor="middle" fill={c.positive} fontSize={7} fontFamily={font}>
           top-k match
         </text>
-        <text x={130} y={112} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
-          Similar embeddings → relevant documents
+        <text x={140} y={116} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Nearest embedding → relevant document
         </text>
       </DiagramSvg>
     </VisualFigure>
@@ -145,6 +155,24 @@ export function VectorDatabaseDiagram({ caption }: { caption?: string }) {
 }
 
 export function FineTuningLoRADiagram({ caption }: { caption?: string }) {
+  const barW = 14;
+  const barGap = 8;
+  const barCount = 4;
+  const groupW = barCount * barW + (barCount - 1) * barGap;
+  const leftCx = 78;
+  const rightCx = 222;
+  const barY = 38;
+  const barH = 46;
+  const leftStart = leftCx - groupW / 2;
+
+  const wX = rightCx - 38;
+  const wW = 34;
+  const wH = 50;
+  const adapterY = 42;
+  const adapterH = 38;
+  const aX = wX + wW + 12;
+  const bX = aX + 16;
+
   return (
     <VisualFigure
       caption={
@@ -153,29 +181,55 @@ export function FineTuningLoRADiagram({ caption }: { caption?: string }) {
       }
       title="Full fine-tuning versus LoRA"
     >
-      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
-        <text x={70} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+      <DiagramSvg viewBox="0 0 300 152" minWidth={260}>
+        <line x1={150} y1={24} x2={150} y2={118} stroke={c.grid} strokeWidth={1} strokeDasharray="4 3" />
+
+        {/* Full fine-tune panel */}
+        <text x={leftCx} y={22} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Full fine-tune
         </text>
-        {[0, 1, 2, 3].map((i) => (
-          <rect key={`f-${i}`} x={24 + i * 22} y={28} width={18} height={48} rx={2} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
+        {Array.from({ length: barCount }).map((_, i) => (
+          <rect
+            key={`f-${i}`}
+            x={leftStart + i * (barW + barGap)}
+            y={barY}
+            width={barW}
+            height={barH}
+            rx={2}
+            fill={c.accentDim}
+            stroke={c.accent}
+            strokeWidth={1.5}
+          />
         ))}
-        <text x={70} y={88} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={leftCx} y={barY + barH + 14} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           All weights trainable
         </text>
-        <text x={210} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+
+        {/* LoRA panel */}
+        <text x={rightCx} y={22} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           LoRA adapter
         </text>
-        {[0, 1, 2, 3].map((i) => (
-          <rect key={`l-${i}`} x={164 + i * 22} y={28} width={18} height={48} rx={2} fill={c.grid} fillOpacity={0.4} stroke={c.grid} strokeWidth={0.75} />
-        ))}
-        <rect x={186} y={36} width={8} height={32} rx={1} fill={c.positiveDim} stroke={c.positive} strokeWidth={1.5} />
-        <rect x={198} y={36} width={8} height={32} rx={1} fill={c.positiveDim} stroke={c.positive} strokeWidth={1.5} />
-        <text x={210} y={88} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
-          Frozen base + small A·B
+        <rect x={wX} y={barY - 2} width={wW} height={wH} rx={3} fill={c.grid} fillOpacity={0.35} stroke={c.grid} strokeWidth={1} />
+        <text x={wX + wW / 2} y={barY + 18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          W
         </text>
-        <text x={140} y={116} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
-          LoRA: W′ = W + BA (low rank)
+        <text x={wX + wW / 2} y={barY + 32} textAnchor="middle" fill={c.text} fontSize={6} fontFamily={font}>
+          frozen
+        </text>
+        <rect x={aX} y={adapterY} width={10} height={adapterH} rx={1} fill={c.positiveDim} stroke={c.positive} strokeWidth={1.5} />
+        <text x={aX + 5} y={adapterY - 4} textAnchor="middle" fill={c.positive} fontSize={7} fontFamily={font}>
+          A
+        </text>
+        <rect x={bX} y={adapterY} width={10} height={adapterH} rx={1} fill={c.positiveDim} stroke={c.positive} strokeWidth={1.5} />
+        <text x={bX + 5} y={adapterY - 4} textAnchor="middle" fill={c.positive} fontSize={7} fontFamily={font}>
+          B
+        </text>
+        <text x={rightCx} y={barY + barH + 14} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Train A·B only
+        </text>
+
+        <text x={150} y={138} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          LoRA: W′ = W + B·A
         </text>
       </DiagramSvg>
     </VisualFigure>
@@ -196,24 +250,27 @@ export function AgentToolUseDiagram({ caption }: { caption?: string }) {
       }
       title="Agent tool use loop"
     >
-      <DiagramSvg viewBox="0 0 296 120" minWidth={260}>
+      <DiagramSvg viewBox="0 0 296 128" minWidth={260}>
         <defs>
           <marker id="agArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
           </marker>
         </defs>
+        <text x={148} y={16} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+          Reason → act → observe → repeat
+        </text>
         {nodes.map((n, i) => (
           <g key={n.label}>
-            <rect x={n.x} y={32} width={72} height={44} rx={4} fill={n.fill} stroke={n.stroke} strokeWidth={1.5} />
-            <text x={n.x + 36} y={50} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
+            <rect x={n.x} y={28} width={72} height={44} rx={4} fill={n.fill} stroke={n.stroke} strokeWidth={1.5} />
+            <text x={n.x + 36} y={46} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
               {n.label}
             </text>
-            <text x={n.x + 36} y={64} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+            <text x={n.x + 36} y={60} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
               {n.sub}
             </text>
             {i < nodes.length - 1 && (
               <path
-                d={`M ${n.x + 76} 54 L ${nodes[i + 1].x - 4} 54`}
+                d={`M ${n.x + 76} 50 L ${nodes[i + 1].x - 4} 50`}
                 stroke={c.arrow}
                 strokeWidth={1.5}
                 markerEnd="url(#agArrow)"
@@ -222,17 +279,14 @@ export function AgentToolUseDiagram({ caption }: { caption?: string }) {
           </g>
         ))}
         <path
-          d="M 236 80 Q 148 100 52 80"
+          d="M 236 78 Q 148 98 52 78"
           fill="none"
           stroke={c.warn}
           strokeWidth={1.5}
           strokeDasharray="4 3"
           markerEnd="url(#agArrow)"
         />
-        <text x={148} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
-          Reason → act → observe → repeat
-        </text>
-        <text x={148} y={112} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={148} y={116} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Feedback loop until task complete
         </text>
       </DiagramSvg>

@@ -1,5 +1,4 @@
-import { VisualFigure, visualColors as c } from "../shared";
-import { DiagramSvg } from "./DiagramSvg";
+import { VisualFigure, visualColors as c, DiagramSvg } from "../shared";
 
 const font = "system-ui, sans-serif";
 
@@ -23,7 +22,7 @@ export function DatasetDiagram({ caption }: { caption?: string }) {
       }
       title="Dataset as rows and columns"
     >
-      <DiagramSvg viewBox="0 0 248 132" minWidth={220}>
+      <DiagramSvg viewBox="0 0 248 140" minWidth={220}>
         <text x={124} y={18} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Tabular dataset
         </text>
@@ -77,7 +76,7 @@ export function DatasetDiagram({ caption }: { caption?: string }) {
             </g>
           ))
         )}
-        <text x={124} y={118} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={124} y={128} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Rows = samples · Columns = features / target
         </text>
       </DiagramSvg>
@@ -142,7 +141,7 @@ export function TrainingInferenceDiagram({ caption }: { caption?: string }) {
       }
       title="Training versus inference"
     >
-      <DiagramSvg viewBox="0 0 296 108" minWidth={260}>
+      <DiagramSvg viewBox="0 0 296 118" minWidth={260}>
         <defs>
           <marker id="tiArrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
@@ -169,8 +168,8 @@ export function TrainingInferenceDiagram({ caption }: { caption?: string }) {
             )}
           </g>
         ))}
-        <rect x={108} y={72} width={72} height={24} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} strokeDasharray="3 2" />
-        <text x={144} y={88} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <rect x={108} y={72} width={72} height={32} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} strokeDasharray="4 3" />
+        <text x={144} y={92} textAnchor="middle" fill={c.textBright} fontSize={8} fontFamily={font}>
           Inference: new input → output
         </text>
       </DiagramSvg>
@@ -187,7 +186,7 @@ export function ParameterHyperparameterDiagram({ caption }: { caption?: string }
       }
       title="Parameters versus hyperparameters"
     >
-      <DiagramSvg viewBox="0 0 280 128" minWidth={240}>
+      <DiagramSvg viewBox="0 0 280 140" minWidth={240}>
         <rect x={16} y={24} width={116} height={72} rx={6} fill={c.positiveDim} stroke={c.positive} strokeWidth={1.5} />
         <text x={74} y={44} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Parameters
@@ -208,17 +207,14 @@ export function ParameterHyperparameterDiagram({ caption }: { caption?: string }
         <text x={206} y={74} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           e.g. lr, max depth
         </text>
-        <path d="M 74 96 L 74 108" stroke={c.positive} strokeWidth={1.5} markerEnd="url(#phDown)" />
-        <path d="M 206 96 L 206 108" stroke={c.warn} strokeWidth={1.5} />
-        <defs>
-          <marker id="phDown" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
-            <path d="M0,0 L6,6 L0,6 Z" fill={c.positive} />
-          </marker>
-        </defs>
-        <text x={74} y={120} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <line x1={74} y1={98} x2={74} y2={110} stroke={c.positive} strokeWidth={1.5} />
+        <polygon points="71,110 77,110 74,114" fill={c.positive} />
+        <line x1={206} y1={98} x2={206} y2={110} stroke={c.warn} strokeWidth={1.5} />
+        <polygon points="203,110 209,110 206,114" fill={c.warn} />
+        <text x={74} y={126} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Updated each epoch
         </text>
-        <text x={206} y={120} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+        <text x={206} y={126} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           Fixed per run
         </text>
       </DiagramSvg>

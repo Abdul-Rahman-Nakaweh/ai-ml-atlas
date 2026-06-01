@@ -3,11 +3,16 @@ import { conceptById } from "@/data/concepts";
 import { formatDifficultyLabel } from "@/data/concepts/libraryCategories";
 import { Badge } from "@/components/Badge";
 import { VisualIntuitionSection } from "@/components/visuals/VisualIntuitionSection";
+import { ConceptStructureSection } from "./ConceptStructureSection";
+import { ConceptEquationSection } from "./ConceptEquationSection";
 import { cn } from "@/lib/utils";
 
 const EARLY_SECTIONS: { key: keyof Concept; label: string }[] = [
   { key: "coreMeaning", label: "Core Meaning" },
   { key: "workflowLocation", label: "Workflow Location" },
+];
+
+const MID_SECTIONS: { key: keyof Concept; label: string }[] = [
   { key: "functionRole", label: "Function" },
   { key: "mechanism", label: "Mechanism" },
 ];
@@ -44,7 +49,6 @@ export function ConceptDetailPanel({
     );
   }
 
-  const pathIds = [...concept.learnBefore, concept.id, ...concept.learnAfter];
   const visualType = concept.visualType ?? concept.visualAid;
 
   return (
@@ -67,37 +71,6 @@ export function ConceptDetailPanel({
         </div>
       </header>
 
-      {pathIds.length > 1 && (
-        <div className="px-5 py-3 md:px-6 border-b border-atlas-border/30 bg-atlas-bg/30">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-            Recommended path
-          </p>
-          <div className="flex flex-wrap items-center gap-1 text-xs text-slate-400">
-            {pathIds.map((id, i) => {
-              const c = conceptById[id];
-              const isCurrent = id === concept.id;
-              return (
-                <span key={id} className="flex items-center gap-1">
-                  {i > 0 && <span className="text-slate-600">→</span>}
-                  <button
-                    type="button"
-                    onClick={() => onSelectConcept(id)}
-                    className={cn(
-                      "rounded px-1.5 py-0.5 transition",
-                      isCurrent
-                        ? "text-cyan-300 font-medium"
-                        : "hover:text-cyan-400 text-slate-400"
-                    )}
-                  >
-                    {c?.name ?? id}
-                  </button>
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
       <div className="px-5 py-5 md:px-6 space-y-5 max-w-prose">
         {EARLY_SECTIONS.map(({ key, label }) => {
           const text = concept[key] as string;
@@ -111,6 +84,23 @@ export function ConceptDetailPanel({
             </section>
           );
         })}
+
+        <ConceptStructureSection concept={concept} onSelectConcept={onSelectConcept} />
+
+        {MID_SECTIONS.map(({ key, label }) => {
+          const text = concept[key] as string;
+          if (!text?.trim()) return null;
+          return (
+            <section key={key}>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                {label}
+              </h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-300">{text}</p>
+            </section>
+          );
+        })}
+
+        {concept.equation && <ConceptEquationSection equation={concept.equation} />}
 
         {visualType && <VisualIntuitionSection visualType={visualType} />}
 

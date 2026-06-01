@@ -47,6 +47,7 @@ import {
   RNNLSTMDiagram,
   BackpropagationDiagram,
   GradientDescentDiagram,
+  ActivationFunctionDiagram,
 } from "./diagrams/DeepLearningDiagrams";
 import {
   TokenizationDiagram,
@@ -198,6 +199,10 @@ export const visualAidRegistry: Record<VisualAidType, VisualAidEntry> = {
   "gradient-descent": {
     Component: GradientDescentDiagram,
     defaultCaption: "Parameters move in the direction that reduces the loss function.",
+  },
+  "activation-function": {
+    Component: ActivationFunctionDiagram,
+    defaultCaption: "ReLU adds nonlinearity in hidden layers; sigmoid maps values to a probability-like range.",
   },
   tokenization: {
     Component: TokenizationDiagram,

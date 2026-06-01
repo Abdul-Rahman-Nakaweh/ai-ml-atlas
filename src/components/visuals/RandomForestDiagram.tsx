@@ -1,4 +1,6 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
+
+const font = "system-ui, sans-serif";
 
 function MiniTree({ x, y }: { x: number; y: number }) {
   return (
@@ -21,34 +23,27 @@ export function RandomForestDiagram({ caption }: { caption?: string }) {
       }
       title="Ensemble voting in Random Forest"
     >
-      <svg viewBox="0 0 300 130" className="w-full min-w-[260px] h-auto" aria-hidden>
+      <DiagramSvg viewBox="0 0 300 130" minWidth={260}>
         <MiniTree x={10} y={10} />
         <MiniTree x={70} y={10} />
         <MiniTree x={130} y={10} />
         <MiniTree x={190} y={10} />
-        <text x={35} y={58} fill={c.text} fontSize={7} fontFamily="system-ui">
-          Tree 1
-        </text>
-        <text x={95} y={58} fill={c.text} fontSize={7} fontFamily="system-ui">
-          Tree 2
-        </text>
-        <text x={155} y={58} fill={c.text} fontSize={7} fontFamily="system-ui">
-          Tree 3
-        </text>
-        <text x={215} y={58} fill={c.text} fontSize={7} fontFamily="system-ui">
-          Tree n
-        </text>
-        {[35, 95, 155, 215].map((x) => (
+        {[38, 98, 158, 218].map((x, i) => (
+          <text key={x} x={x} y={58} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+            {["Tree 1", "Tree 2", "Tree 3", "Tree n"][i]}
+          </text>
+        ))}
+        {[38, 98, 158, 218].map((x) => (
           <line key={x} x1={x} y1={62} x2={150} y2={82} stroke={c.arrow} strokeWidth={0.75} />
         ))}
         <rect x={100} y={82} width={100} height={28} rx={5} fill={c.accentDim} stroke={c.accent} strokeWidth={1.5} />
-        <text x={150} y={100} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
+        <text x={150} y={100} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           Vote / Average
         </text>
-        <text x={150} y={122} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
+        <text x={150} y={122} textAnchor="middle" fill={c.text} fontSize={8} fontFamily={font}>
           Final prediction
         </text>
-      </svg>
+      </DiagramSvg>
     </VisualFigure>
   );
 }

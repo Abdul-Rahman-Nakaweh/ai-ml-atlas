@@ -1,17 +1,23 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
 
-const STAGES = [
-  "Problem",
-  "Data",
-  "Preprocess",
-  "Features",
-  "Model",
-  "Train",
-  "Validate",
-  "Deploy",
-];
+const font = "system-ui, sans-serif";
 
 export function PipelineFlowDiagram({ caption }: { caption?: string }) {
+  const stages = [
+    "Problem",
+    "Data",
+    "Preprocess",
+    "Features",
+    "Model",
+    "Train",
+    "Validate",
+    "Deploy",
+  ];
+  const boxW = 44;
+  const gap = 6;
+  const startX = 12;
+  const totalW = startX * 2 + stages.length * boxW + (stages.length - 1) * gap;
+
   return (
     <VisualFigure
       caption={
@@ -20,52 +26,35 @@ export function PipelineFlowDiagram({ caption }: { caption?: string }) {
       }
       title="Machine learning pipeline flow"
     >
-      <svg viewBox="0 0 400 72" className="w-full min-w-[320px] h-auto" aria-hidden>
+      <DiagramSvg viewBox={`0 0 ${totalW} 72`} minWidth={320}>
         <defs>
           <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
           </marker>
         </defs>
-        {STAGES.slice(0, -1).map((_, i) => (
-          <line
-            key={`line-${i}`}
-            x1={8 + i * 48 + 42}
-            y1={34}
-            x2={8 + (i + 1) * 48 - 2}
-            y2={34}
-            stroke={c.arrow}
-            strokeWidth={1}
-            markerEnd="url(#arrowhead)"
-          />
-        ))}
-        {STAGES.map((label, i) => {
-          const x = 8 + i * 48;
+        {stages.map((label, i) => {
+          const x = startX + i * (boxW + gap);
           return (
             <g key={label}>
-              <rect
-                x={x}
-                y={20}
-                width={42}
-                height={28}
-                rx={4}
-                fill={c.accentDim}
-                stroke={c.accent}
-                strokeWidth={1}
-              />
-              <text
-                x={x + 21}
-                y={38}
-                textAnchor="middle"
-                fill={c.textBright}
-                fontSize={7}
-                fontFamily="system-ui, sans-serif"
-              >
+              {i > 0 && (
+                <line
+                  x1={x - gap}
+                  y1={36}
+                  x2={x - 2}
+                  y2={36}
+                  stroke={c.arrow}
+                  strokeWidth={1}
+                  markerEnd="url(#arrowhead)"
+                />
+              )}
+              <rect x={x} y={22} width={boxW} height={28} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
+              <text x={x + boxW / 2} y={40} textAnchor="middle" fill={c.textBright} fontSize={6.5} fontFamily={font}>
                 {label}
               </text>
             </g>
           );
         })}
-      </svg>
+      </DiagramSvg>
     </VisualFigure>
   );
 }

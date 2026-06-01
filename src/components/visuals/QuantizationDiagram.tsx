@@ -1,6 +1,15 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
+
+const font = "system-ui, sans-serif";
 
 export function QuantizationDiagram({ caption }: { caption?: string }) {
+  const floatX = 20;
+  const floatW = 110;
+  const intX = 170;
+  const intW = 110;
+  const boxY = 34;
+  const boxH = 36;
+
   return (
     <VisualFigure
       caption={
@@ -9,16 +18,16 @@ export function QuantizationDiagram({ caption }: { caption?: string }) {
       }
       title="Numeric precision reduction"
     >
-      <svg viewBox="0 0 300 120" className="w-full min-w-[260px] h-auto" aria-hidden>
-        <text x={75} y={22} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
+      <DiagramSvg viewBox="0 0 300 120" minWidth={260}>
+        <text x={floatX + floatW / 2} y={26} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           float32
         </text>
-        <rect x={20} y={30} width={110} height={36} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
-        <text x={75} y={52} textAnchor="middle" fill={c.accent} fontSize={8} fontFamily="monospace">
+        <rect x={floatX} y={boxY} width={floatW} height={boxH} rx={4} fill={c.accentDim} stroke={c.accent} strokeWidth={1} />
+        <text x={floatX + floatW / 2} y={boxY + 22} textAnchor="middle" fill={c.accent} fontSize={8} fontFamily="monospace">
           0.8472913
         </text>
-        <path d="M 140 48 L 165 48" stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#qarrow)" />
-        <text x={152} y={40} textAnchor="middle" fill={c.text} fontSize={7} fontFamily="system-ui">
+        <path d={`M ${floatX + floatW + 8} ${boxY + boxH / 2} L ${intX - 8} ${boxY + boxH / 2}`} stroke={c.arrow} strokeWidth={1.5} markerEnd="url(#qarrow)" />
+        <text x={(floatX + floatW + intX) / 2} y={boxY + boxH / 2 - 8} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
           scale
         </text>
         <defs>
@@ -26,17 +35,20 @@ export function QuantizationDiagram({ caption }: { caption?: string }) {
             <path d="M0,0 L6,3 L0,6 Z" fill={c.arrow} />
           </marker>
         </defs>
-        <text x={225} y={22} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily="system-ui">
+        <text x={intX + intW / 2} y={26} textAnchor="middle" fill={c.textBright} fontSize={9} fontFamily={font}>
           int8
         </text>
-        <rect x={170} y={30} width={110} height={36} rx={4} fill={c.positiveDim} stroke={c.positive} strokeWidth={1} />
-        <text x={225} y={52} textAnchor="middle" fill={c.positive} fontSize={10} fontFamily="monospace">
+        <rect x={intX} y={boxY} width={intW} height={boxH} rx={4} fill={c.positiveDim} stroke={c.positive} strokeWidth={1} />
+        <text x={intX + intW / 2} y={boxY + 22} textAnchor="middle" fill={c.positive} fontSize={10} fontFamily="monospace">
           108
         </text>
-        <text x={150} y={95} textAnchor="middle" fill={c.text} fontSize={8} fontFamily="system-ui">
-          Smaller memory footprint · faster inference
+        <text x={floatX + floatW / 2} y={96} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          High precision
         </text>
-      </svg>
+        <text x={intX + intW / 2} y={96} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
+          Smaller · faster
+        </text>
+      </DiagramSvg>
     </VisualFigure>
   );
 }

@@ -1,4 +1,6 @@
-import { VisualFigure, visualColors as c } from "./shared";
+import { VisualFigure, visualColors as c, DiagramSvg } from "./shared";
+
+const font = "system-ui, sans-serif";
 
 function Layer({ x, nodes, label }: { x: number; nodes: number; label: string }) {
   const spacing = 28;
@@ -16,7 +18,7 @@ function Layer({ x, nodes, label }: { x: number; nodes: number; label: string })
           strokeWidth={1}
         />
       ))}
-      <text x={x} y={145} textAnchor="middle" fill={c.text} fontSize={7} fontFamily="system-ui">
+      <text x={x} y={145} textAnchor="middle" fill={c.text} fontSize={7} fontFamily={font}>
         {label}
       </text>
     </g>
@@ -50,14 +52,14 @@ export function NeuralNetworkDiagram({ caption }: { caption?: string }) {
       }
       title="Feedforward neural network layers"
     >
-      <svg viewBox="0 0 260 155" className="w-full min-w-[220px] h-auto" aria-hidden>
+      <DiagramSvg viewBox="0 0 260 155" minWidth={220}>
         {connections.map(([x1, y1, x2, y2], i) => (
           <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={c.grid} strokeWidth={0.75} opacity={0.7} />
         ))}
         {layers.map((l) => (
           <Layer key={l.label} x={l.x} nodes={l.n} label={l.label} />
         ))}
-      </svg>
+      </DiagramSvg>
     </VisualFigure>
   );
 }
