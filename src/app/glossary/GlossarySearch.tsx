@@ -3,8 +3,27 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { glossaryEntries } from "@/data/glossary";
+import { GlossaryEntryDetail } from "@/components/GlossaryEntryDetail";
 import { SearchBar } from "@/components/SearchBar";
 import { PageContainer } from "@/components/PageContainer";
+
+function entrySearchText(e: (typeof glossaryEntries)[number]) {
+  return [
+    e.term,
+    e.fullName,
+    e.definition,
+    e.locationInWorkflow,
+    e.functionRole,
+    e.technicalBasis,
+    e.practicalExample,
+    e.commonDistinction,
+    e.limitations,
+    e.relatedTerms.join(" "),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
 
 export function GlossarySearch() {
   const [search, setSearch] = useState("");
@@ -12,12 +31,7 @@ export function GlossarySearch() {
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     if (!q) return glossaryEntries;
-    return glossaryEntries.filter(
-      (e) =>
-        e.term.toLowerCase().includes(q) ||
-        e.fullName?.toLowerCase().includes(q) ||
-        e.simpleExplanation.toLowerCase().includes(q)
-    );
+    return glossaryEntries.filter((e) => entrySearchText(e).includes(q));
   }, [search]);
 
   return (
@@ -43,32 +57,9 @@ export function GlossarySearch() {
         <p className="mt-2 text-xs text-slate-500">{filtered.length} entries</p>
       </div>
 
-      <div className="max-w-3xl divide-y divide-atlas-border/40">
+      <div className="max-w-3xl">
         {filtered.map((entry) => (
-          <article key={entry.id} className="py-6 first:pt-0">
-            <div className="flex flex-wrap items-baseline gap-2">
-              <h2 className="text-lg font-semibold text-white">{entry.term}</h2>
-              {entry.fullName && (
-                <span className="text-sm text-slate-500">({entry.fullName})</span>
-              )}
-            </div>
-            <p className="mt-2 text-sm leading-relaxed text-slate-300">{entry.simpleExplanation}</p>
-            <p className="mt-2 text-sm text-slate-500">
-              <span className="font-medium text-slate-400">Related area: </span>
-              {entry.whereItFits}
-            </p>
-            <p className="mt-1 text-xs text-slate-600">
-              Related concepts: {entry.relatedConcepts.join("; ")}
-            </p>
-            {entry.techniqueId && (
-              <Link
-                href={`/library#${entry.techniqueId}`}
-                className="mt-2 inline-block text-xs text-cyan-500 hover:text-cyan-400"
-              >
-                Library entry →
-              </Link>
-            )}
-          </article>
+          <GlossaryEntryDetail key={entry.id} entry={entry} />
         ))}
       </div>
     </PageContainer>

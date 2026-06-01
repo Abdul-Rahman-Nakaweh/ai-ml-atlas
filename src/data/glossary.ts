@@ -1,54 +1,13 @@
 import type { GlossaryEntry } from "@/types";
+import { expandedGlossaryEntries } from "./glossaryExpanded";
+import { otherGlossaryEntries } from "./glossaryOther";
 
-/** Add glossary entries here — set techniqueId when a full concept card exists */
+/**
+ * Glossary entries for /glossary.
+ * Priority terms with full non-repetitive fields: glossaryExpanded.ts
+ * Additional terms: glossaryOther.ts
+ */
 export const glossaryEntries: GlossaryEntry[] = [
-  { id: "ai", term: "AI", fullName: "Artificial Intelligence", simpleExplanation: "Systems that perform tasks requiring human-like reasoning or perception.", whereItFits: "Umbrella term spanning classical ML, deep learning, and modern generative AI.", relatedConcepts: ["ML", "DL", "Gen 3 AI"] },
-  { id: "ml", term: "ML", fullName: "Machine Learning", simpleExplanation: "Algorithms that learn patterns from data rather than explicit rules.", whereItFits: "Core of most predictive and generative systems in the atlas.", relatedConcepts: ["Training", "Model", "Dataset"] },
-  { id: "dl", term: "DL", fullName: "Deep Learning", simpleExplanation: "ML using neural networks with multiple layers.", whereItFits: "Gen 2 and Gen 3 representation learning.", relatedConcepts: ["CNN", "RNN", "Transformer"] },
-  { id: "gen1", term: "Gen 1 AI", fullName: "Classical Machine Learning", simpleExplanation: "Traditional algorithms on structured features.", whereItFits: "AI Generations; tabular workflows.", relatedConcepts: ["Random Forest", "SVM", "Logistic Regression"] },
-  { id: "gen2", term: "Gen 2 AI", fullName: "Deep Neural Networks", simpleExplanation: "Neural networks learning hierarchical features.", whereItFits: "Images, audio, sequences.", relatedConcepts: ["CNN", "LSTM", "Backpropagation"], techniqueId: "neural-network" },
-  { id: "gen3", term: "Gen 3 AI", fullName: "Transformers & Modern AI", simpleExplanation: "Attention-based large-scale models and applications.", whereItFits: "LLMs, RAG, agents.", relatedConcepts: ["LLM", "RAG", "Embeddings"], techniqueId: "transformer" },
-  { id: "dataset", term: "Dataset", simpleExplanation: "Collection of samples used for training and evaluation.", whereItFits: "Data Collection and Cleaning.", relatedConcepts: ["Feature", "Label", "Train/Test Split"] },
-  { id: "feature", term: "Feature", simpleExplanation: "An input variable describing each sample.", whereItFits: "Preprocessing and Feature Engineering.", relatedConcepts: ["Feature Engineering", "Embeddings"] },
-  { id: "label", term: "Label", simpleExplanation: "Known outcome attached to a training sample.", whereItFits: "Supervised learning.", relatedConcepts: ["Target", "Training"] },
-  { id: "target", term: "Target", simpleExplanation: "The variable the model is trained to predict.", whereItFits: "Problem Definition and Training.", relatedConcepts: ["Label", "Loss Function"], techniqueId: "loss-function" },
-  { id: "model", term: "Model", simpleExplanation: "A learned function mapping inputs to outputs.", whereItFits: "Entire pipeline.", relatedConcepts: ["Parameter", "Inference"] },
-  { id: "parameter", term: "Parameter", simpleExplanation: "Values learned during training (e.g., weights).", whereItFits: "Training.", relatedConcepts: ["Hyperparameter", "Gradient Descent"], techniqueId: "gradient-descent" },
-  { id: "hyperparameter", term: "Hyperparameter", simpleExplanation: "Settings chosen before training, not learned from data.", whereItFits: "Hyperparameter Tuning.", relatedConcepts: ["Grid Search", "Cross-Validation"], techniqueId: "grid-search" },
-  { id: "training", term: "Training", simpleExplanation: "Fitting model parameters on training data.", whereItFits: "Training pipeline stage.", relatedConcepts: ["Loss Function", "Validation"] },
-  { id: "inference", term: "Inference", simpleExplanation: "Using a trained model on new data.", whereItFits: "Deployment and Monitoring.", relatedConcepts: ["Deployment", "Latency"] },
-  { id: "validation", term: "Validation", simpleExplanation: "Assessing performance on held-out data during development.", whereItFits: "Validation stage—not the final test set.", relatedConcepts: ["Cross-Validation", "Test Set"], techniqueId: "cross-validation" },
-  { id: "test-set", term: "Test Set", simpleExplanation: "Data reserved for final unbiased evaluation.", whereItFits: "Used once at end of project.", relatedConcepts: ["Data Leakage", "Overfitting"], techniqueId: "train-test-split" },
-  { id: "overfitting", term: "Overfitting", simpleExplanation: "Model memorizes training noise.", whereItFits: "Training and Regularization.", relatedConcepts: ["Underfitting", "Regularization"], techniqueId: "overfitting" },
-  { id: "underfitting", term: "Underfitting", simpleExplanation: "Model too simple to capture signal.", whereItFits: "Model Selection.", relatedConcepts: ["Overfitting", "Bias-Variance Trade-off"], techniqueId: "underfitting" },
-  { id: "data-leakage", term: "Data Leakage", simpleExplanation: "Test/future info leaks into training or preprocessing.", whereItFits: "Invalidates metrics.", relatedConcepts: ["Cross-Validation", "Test Set"], techniqueId: "data-leakage" },
-  { id: "svm", term: "SVM", fullName: "Support Vector Machine", simpleExplanation: "Max-margin classifier; kernels for nonlinearity.", whereItFits: "Gen 1 classification.", relatedConcepts: ["Margin", "Kernel"], techniqueId: "svm" },
-  { id: "knn", term: "k-NN", fullName: "k-Nearest Neighbors", simpleExplanation: "Vote from nearest training points.", whereItFits: "Gen 1; memory-heavy on device.", relatedConcepts: ["Distance Metrics"], techniqueId: "knn" },
-  { id: "pca", term: "PCA", fullName: "Principal Component Analysis", simpleExplanation: "Projects onto max-variance directions.", whereItFits: "Feature extraction.", relatedConcepts: ["Eigenvectors"], techniqueId: "pca" },
-  { id: "cnn", term: "CNN", fullName: "Convolutional Neural Network", simpleExplanation: "Convolutional filters for spatial patterns.", whereItFits: "Gen 2 vision.", relatedConcepts: ["ViT"], techniqueId: "cnn" },
-  { id: "rnn", term: "RNN", fullName: "Recurrent Neural Network", simpleExplanation: "Sequential hidden state model.", whereItFits: "Gen 2 sequences.", relatedConcepts: ["LSTM"], techniqueId: "rnn" },
-  { id: "lstm", term: "LSTM", fullName: "Long Short-Term Memory", simpleExplanation: "Gated RNN for longer dependencies.", whereItFits: "Gen 2 time series/text.", relatedConcepts: ["RNN"], techniqueId: "lstm" },
-  { id: "transformer", term: "Transformer", simpleExplanation: "Self-attention architecture.", whereItFits: "Gen 3 foundation.", relatedConcepts: ["Attention", "BERT", "GPT"], techniqueId: "transformer" },
-  { id: "vit", term: "ViT", fullName: "Vision Transformer", simpleExplanation: "Transformer on image patches.", whereItFits: "Gen 3 vision.", relatedConcepts: ["Transformer", "CNN"], techniqueId: "vit" },
-  { id: "gpt", term: "GPT", fullName: "Generative Pre-trained Transformer", simpleExplanation: "Decoder transformer for text generation.", whereItFits: "Gen 3 LLMs.", relatedConcepts: ["LLM", "Fine-Tuning"], techniqueId: "gpt" },
-  { id: "bert", term: "BERT", fullName: "Bidirectional Encoder Representations from Transformers", simpleExplanation: "Encoder pretrained with masked LM.", whereItFits: "Understanding/embeddings.", relatedConcepts: ["Embeddings"], techniqueId: "bert" },
-  { id: "llm", term: "LLM", fullName: "Large Language Model", simpleExplanation: "Large transformer trained on broad text.", whereItFits: "Gen 3 apps.", relatedConcepts: ["RAG", "GPT"], techniqueId: "llm" },
-  { id: "rag", term: "RAG", fullName: "Retrieval-Augmented Generation", simpleExplanation: "Retrieve docs then generate conditioned on them.", whereItFits: "Grounded Q&A.", relatedConcepts: ["Vector Database"], techniqueId: "rag" },
-  { id: "lora", term: "LoRA", fullName: "Low-Rank Adaptation", simpleExplanation: "Efficient fine-tuning via low-rank updates.", whereItFits: "Adapt LLMs with less compute.", relatedConcepts: ["Fine-Tuning"], techniqueId: "lora" },
-  { id: "embedding", term: "Embedding", simpleExplanation: "Dense vector capturing semantic similarity.", whereItFits: "Search, RAG, NLP.", relatedConcepts: ["Vector Database"], techniqueId: "embeddings" },
-  { id: "token", term: "Token", simpleExplanation: "Subword unit for language models.", whereItFits: "LLM input.", relatedConcepts: ["Tokenization"] },
-  { id: "tokenization", term: "Tokenization", simpleExplanation: "Splitting text into tokens.", whereItFits: "LLM preprocessing.", relatedConcepts: ["Token", "BERT"], techniqueId: "tokenization" },
-  { id: "vector-db", term: "Vector Database", simpleExplanation: "DB optimized for embedding similarity search.", whereItFits: "RAG retrieval.", relatedConcepts: ["RAG"], techniqueId: "vector-database" },
-  { id: "onnx", term: "ONNX", fullName: "Open Neural Network Exchange", simpleExplanation: "Model interchange format.", whereItFits: "Deployment.", relatedConcepts: ["TFLite"], techniqueId: "onnx" },
-  { id: "tflite", term: "TFLite", fullName: "TensorFlow Lite", simpleExplanation: "On-device inference runtime.", whereItFits: "Mobile/edge.", relatedConcepts: ["TFLM"], techniqueId: "tflite" },
-  { id: "tflm", term: "TFLM", fullName: "TensorFlow Lite Micro", simpleExplanation: "TFLite for microcontrollers.", whereItFits: "TinyML.", relatedConcepts: ["TinyML"], techniqueId: "tflm" },
-  { id: "tinyml", term: "TinyML", simpleExplanation: "ML on MCUs under tight resources.", whereItFits: "Embedded deployment.", relatedConcepts: ["Quantization"], techniqueId: "tinyml" },
-  { id: "roc-auc", term: "ROC-AUC", simpleExplanation: "Area under ROC curve; ranking quality.", whereItFits: "Imbalanced classification.", relatedConcepts: ["F1-score"], techniqueId: "roc-auc" },
-  { id: "f1", term: "F1-score", simpleExplanation: "Harmonic mean of precision and recall.", whereItFits: "Balanced classification metric.", relatedConcepts: ["Precision", "Recall"], techniqueId: "f1-score" },
-  { id: "rmse", term: "RMSE", fullName: "Root Mean Squared Error", simpleExplanation: "Sqrt of mean squared error.", whereItFits: "Regression.", relatedConcepts: ["MAE"], techniqueId: "rmse" },
-  { id: "mae", term: "MAE", fullName: "Mean Absolute Error", simpleExplanation: "Average absolute prediction error.", whereItFits: "Regression.", relatedConcepts: ["RMSE"], techniqueId: "mae" },
-  { id: "quantization", term: "Quantization", simpleExplanation: "Lower numeric precision for size/speed.", whereItFits: "Compression/deployment.", relatedConcepts: ["Pruning"], techniqueId: "quantization" },
-  { id: "pruning", term: "Pruning", simpleExplanation: "Remove low-impact weights.", whereItFits: "Compression.", relatedConcepts: ["Quantization"], techniqueId: "pruning" },
-  { id: "distillation", term: "Distillation", fullName: "Knowledge Distillation", simpleExplanation: "Small student mimics large teacher.", whereItFits: "Edge deployment.", relatedConcepts: ["TinyML"], techniqueId: "knowledge-distillation" },
-  { id: "mlops", term: "MLOps", fullName: "Machine Learning Operations", simpleExplanation: "Versioning, deploying, monitoring ML in production.", whereItFits: "Post-training lifecycle.", relatedConcepts: ["Monitoring", "Data drift"] },
-];
+  ...expandedGlossaryEntries,
+  ...otherGlossaryEntries,
+].sort((a, b) => a.term.localeCompare(b.term, undefined, { sensitivity: "base" }));

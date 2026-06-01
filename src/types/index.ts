@@ -100,9 +100,15 @@ export interface GlossaryEntry {
   id: string;
   term: string;
   fullName?: string;
-  simpleExplanation: string;
-  whereItFits: string;
-  relatedConcepts: string[];
+  definition: string;
+  locationInWorkflow: string;
+  /** What the term does or which problem it addresses (labeled "Function" in UI) */
+  functionRole: string;
+  technicalBasis: string;
+  practicalExample: string;
+  commonDistinction: string;
+  limitations: string;
+  relatedTerms: string[];
   /** Link to technique library id when available */
   techniqueId?: string;
 }
