@@ -2,6 +2,7 @@ import type { LearnBlock, LearnChapter } from "@/types/learn";
 import { FormalConceptPanel } from "./FormalConceptPanel";
 import { ComparisonTable } from "./ComparisonTable";
 import { InfoCallout } from "./InfoCallout";
+import { VisualIntuitionSection } from "./visuals/VisualIntuitionSection";
 
 function Block({ block }: { block: LearnBlock }) {
   switch (block.type) {
@@ -39,6 +40,10 @@ function Block({ block }: { block: LearnBlock }) {
           {block.content}
         </InfoCallout>
       );
+    case "visual":
+      return block.visualType ? (
+        <VisualIntuitionSection visualAid={block.visualType} caption={block.content} />
+      ) : null;
     default:
       return null;
   }

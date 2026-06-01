@@ -2,6 +2,7 @@ import type { Concept } from "@/types/concept";
 import { conceptById } from "@/data/concepts";
 import { Badge } from "@/components/Badge";
 import { InfoCallout } from "@/components/InfoCallout";
+import { VisualIntuitionSection } from "@/components/visuals/VisualIntuitionSection";
 import { cn } from "@/lib/utils";
 
 const SECTIONS: { key: keyof Concept; label: string }[] = [
@@ -113,6 +114,10 @@ export function ConceptDetailPanel({
       )}
 
       <div className="px-5 py-5 md:px-6 space-y-5 max-w-prose">
+        {concept.visualAid && (
+          <VisualIntuitionSection visualAid={concept.visualAid} />
+        )}
+
         {SECTIONS.map(({ key, label }) => (
           <section key={key}>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">

@@ -1,3 +1,5 @@
+import type { VisualAidType } from "./visual";
+
 export interface FormalConcept {
   id: string;
   title: string;
@@ -14,7 +16,7 @@ export interface FormalConcept {
 }
 
 export interface LearnBlock {
-  type: "paragraph" | "list" | "concept" | "table" | "callout";
+  type: "paragraph" | "list" | "concept" | "table" | "callout" | "visual";
   content?: string;
   title?: string;
   items?: string[];
@@ -23,6 +25,8 @@ export interface LearnBlock {
   rows?: { label: string; cells: string[] }[];
   /** For callout blocks only */
   variant?: "info" | "warning" | "tip";
+  /** For visual blocks only */
+  visualType?: VisualAidType;
 }
 
 export interface LearnSubsection {

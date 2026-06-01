@@ -8,6 +8,7 @@ import {
   techniqueToConcept,
 } from "./mappers";
 import { conceptOverrides } from "./overrides";
+import { conceptVisualAids } from "./visualAids";
 
 /** ID aliases: glossary id → canonical concept id */
 const GLOSSARY_ID_ALIAS: Record<string, string> = {
@@ -92,12 +93,16 @@ function buildConceptLibrary(): Concept[] {
 
   const allIds = new Set(byId.keys());
   return Array.from(byId.values())
-    .map((c) => ({
-      ...c,
-      learnBefore: c.learnBefore.filter((id) => allIds.has(id)),
-      learnAfter: c.learnAfter.filter((id) => allIds.has(id)),
-      relatedConcepts: c.relatedConcepts.filter((id) => allIds.has(id)),
-    }))
+    .map((c) => {
+      const visualAid = c.visualAid ?? conceptVisualAids[c.id];
+      return {
+        ...c,
+        visualAid,
+        learnBefore: c.learnBefore.filter((id) => allIds.has(id)),
+        learnAfter: c.learnAfter.filter((id) => allIds.has(id)),
+        relatedConcepts: c.relatedConcepts.filter((id) => allIds.has(id)),
+      };
+    })
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
 }
 

@@ -645,6 +645,7 @@ export const learnChapters: LearnChapter[] = [
             content:
               "The pipeline proceeds as follows: Problem Definition → Data Collection → Data Cleaning → Preprocessing → Feature Engineering → Feature Selection / Extraction → Model Selection → Training → Hyperparameter Tuning → Validation → Evaluation → Optimization → Deployment → Monitoring. Each arrow represents an artifact handed to the next stage; understanding these hand-offs is more important than memorizing the names.",
           },
+          { type: "visual", visualType: "pipeline-flow" },
           {
             type: "table",
             headers: ["Stage", "Definition / role", "Common techniques", "Output", "Common errors"],
@@ -896,6 +897,8 @@ export const learnChapters: LearnChapter[] = [
             content:
               "Most classification metrics are derived from the confusion matrix, which tabulates predictions against actual labels into true positives, false positives, true negatives, and false negatives. Precision, recall, specificity, and F1 are different summaries of this same table; ROC-AUC summarizes ranking quality across all decision thresholds rather than at a single one.",
           },
+          { type: "visual", visualType: "confusion-matrix" },
+          { type: "visual", visualType: "metric-relations" },
           c("metrics"),
         ],
       },
@@ -913,6 +916,7 @@ export const learnChapters: LearnChapter[] = [
             content:
               "A train/test split sets aside data for a final estimate; a validation set (or cross-validation) supports model and hyperparameter selection without consuming the test set. Nested cross-validation separates tuning from performance estimation when hyperparameters are optimized. Stratified folds preserve class proportions; temporal data require splits that respect time ordering.",
           },
+          { type: "visual", visualType: "data-split" },
           c("cross-validation"),
           c("data-leakage"),
           {
@@ -942,6 +946,7 @@ export const learnChapters: LearnChapter[] = [
             content:
               "Compression reduces the size and inference cost of a trained model so that it fits the deployment target. The three principal techniques—quantization, pruning, and knowledge distillation—are frequently combined, and each must be followed by re-validation of accuracy on representative data.",
           },
+          { type: "visual", visualType: "quantization" },
           c("quantization"),
           c("pruning"),
           c("knowledge-distillation"),
@@ -990,6 +995,7 @@ export const learnChapters: LearnChapter[] = [
             content:
               "A language model first segments text into tokens, then maps those tokens to embeddings, then mixes information across the sequence using attention. These three steps—tokenization, embedding, attention—are the bridge between raw text and the Transformer layers studied in the Model Families chapter.",
           },
+          { type: "visual", visualType: "attention" },
           c("tokenization"),
           c("embeddings"),
         ],
@@ -1063,6 +1069,7 @@ export const learnChapters: LearnChapter[] = [
             content:
               "On constrained devices, model choice is governed as much by memory and latency as by accuracy. The following trade-offs frequently determine which model is deployable.",
           },
+          { type: "visual", visualType: "tinyml-tradeoff" },
           {
             type: "table",
             headers: ["Model", "Embedded strength", "Embedded limitation"],

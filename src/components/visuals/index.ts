@@ -1,0 +1,15 @@
+export { VisualAidRenderer, visualAidRegistry } from "./registry";
+export { VisualIntuitionSection } from "./VisualIntuitionSection";
+export { PipelineFlowDiagram } from "./PipelineFlowDiagram";
+export { DataSplitDiagram } from "./DataSplitDiagram";
+export { ConfusionMatrixDiagram } from "./ConfusionMatrixDiagram";
+export { MetricRelationsDiagram } from "./MetricRelationsDiagram";
+export { ErrorCurveDiagram } from "./ErrorCurveDiagram";
+export { PCADiagram } from "./PCADiagram";
+export { SVMMarginDiagram } from "./SVMMarginDiagram";
+export { KNNDiagram } from "./KNNDiagram";
+export { DecisionTreeDiagram } from "./DecisionTreeDiagram";
+export { NeuralNetworkDiagram } from "./NeuralNetworkDiagram";
+export { AttentionDiagram } from "./AttentionDiagram";
+export { QuantizationDiagram } from "./QuantizationDiagram";
+export { TinyMLTradeoffDiagram } from "./TinyMLTradeoffDiagram";

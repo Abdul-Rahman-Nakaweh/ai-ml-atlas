@@ -43,6 +43,8 @@ export type ConceptPurpose =
   | "optimization"
   | "general";
 
+import type { VisualAidType } from "./visual";
+
 /** Unified concept entry for the Concept Library */
 export interface Concept {
   id: string;
@@ -65,4 +67,6 @@ export interface Concept {
   learnAfter: string[];
   relatedConcepts: string[];
   technicalNote?: string;
+  /** When set, the detail panel shows a Visual Intuition diagram */
+  visualAid?: VisualAidType;
 }
