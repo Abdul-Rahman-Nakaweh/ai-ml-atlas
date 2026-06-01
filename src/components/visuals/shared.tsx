@@ -24,18 +24,46 @@ interface VisualFigureProps {
   title?: string;
 }
 
+/** Consistent visual card wrapper — padding, border, caption below diagram */
 export function VisualFigure({ caption, children, className, title }: VisualFigureProps) {
   return (
     <figure
       className={cn(
-        "rounded-lg border border-atlas-border/50 bg-atlas-surface/40 p-4 max-w-lg",
+        "rounded-lg border border-atlas-border/50 bg-atlas-surface/40 p-4 sm:p-5 w-full max-w-xl",
         className
       )}
       role="img"
       aria-label={title ?? caption}
     >
-      <div className="w-full overflow-x-auto">{children}</div>
-      <figcaption className="mt-3 text-xs leading-relaxed text-slate-500">{caption}</figcaption>
+      <div className="w-full overflow-x-auto overflow-y-visible py-1 px-1">{children}</div>
+      <figcaption className="mt-3 text-xs leading-relaxed text-slate-500 border-t border-atlas-border/30 pt-3">
+        {caption}
+      </figcaption>
     </figure>
+  );
+}
+
+/** @deprecated Alias for VisualFigure */
+export const VisualCard = VisualFigure;
+
+interface DiagramSvgProps {
+  viewBox: string;
+  children: React.ReactNode;
+  minWidth?: number;
+  className?: string;
+}
+
+/** Responsive SVG with safe margins and no clipping */
+export function DiagramSvg({ viewBox, children, minWidth = 240, className }: DiagramSvgProps) {
+  return (
+    <svg
+      viewBox={viewBox}
+      preserveAspectRatio="xMidYMid meet"
+      className={cn("w-full h-auto block", className)}
+      style={{ minWidth, maxHeight: "none" }}
+      aria-hidden
+    >
+      {children}
+    </svg>
   );
 }

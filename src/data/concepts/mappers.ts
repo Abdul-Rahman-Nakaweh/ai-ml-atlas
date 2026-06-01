@@ -239,10 +239,12 @@ function buildExample(t: Technique): string {
 
 export function techniqueToConcept(t: Technique, knownIds: Set<string>): Concept {
   const stages = normalizeArray(t.pipelineStage);
+  const math = normalizeArray(t.mathFoundation).map(String);
   return {
     id: t.id,
     name: t.name,
     summary: t.quickExplanation,
+    libraryCategory: "Foundations",
     conceptType: mapConceptTypeFromTechnique(t),
     generation: t.generation as ConceptGeneration,
     pipelineStage: mapPipelineStage(stages),
@@ -259,6 +261,8 @@ export function techniqueToConcept(t: Technique, knownIds: Set<string>): Concept
     learnAfter: resolveConceptIds(t.learnAfter, knownIds),
     relatedConcepts: resolveConceptIds(t.relatedConcepts, knownIds),
     technicalNote: t.deploymentNotes,
+    deploymentRelevance: t.deploymentRelevance,
+    mathFoundation: math.length ? math : undefined,
   };
 }
 
@@ -269,6 +273,7 @@ export function glossaryToConcept(e: GlossaryEntry, knownIds: Set<string>): Conc
     name,
     fullName: e.fullName,
     summary: e.summary,
+    libraryCategory: "Foundations",
     conceptType: mapConceptTypeFromGlossary(e.category),
     generation:
       e.category === "Modern AI"

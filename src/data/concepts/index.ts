@@ -8,7 +8,9 @@ import {
   techniqueToConcept,
 } from "./mappers";
 import { conceptOverrides } from "./overrides";
-import { conceptVisualAids } from "./visualAids";
+import { conceptVisualTypes } from "./visualAids";
+import { resolveLibraryCategory } from "./libraryCategories";
+import { LIBRARY_CATEGORIES } from "@/types/concept";
 
 /** ID aliases: glossary id → canonical concept id */
 const GLOSSARY_ID_ALIAS: Record<string, string> = {
@@ -75,7 +77,6 @@ function buildConceptLibrary(): Concept[] {
       patch.summary &&
       patch.coreMeaning &&
       patch.workflowLocation &&
-      patch.functionRole &&
       patch.mechanism &&
       patch.example &&
       patch.commonDistinction &&
@@ -85,6 +86,7 @@ function buildConceptLibrary(): Concept[] {
         learnBefore: [],
         learnAfter: [],
         relatedConcepts: [],
+        functionRole: patch.functionRole ?? "",
         ...patch,
         id: canonicalId,
       } as Concept);
@@ -94,10 +96,12 @@ function buildConceptLibrary(): Concept[] {
   const allIds = new Set(byId.keys());
   return Array.from(byId.values())
     .map((c) => {
-      const visualAid = c.visualAid ?? conceptVisualAids[c.id];
+      const visualType = c.visualType ?? c.visualAid ?? conceptVisualTypes[c.id];
+      const withCategory = { ...c, libraryCategory: resolveLibraryCategory(c) };
       return {
-        ...c,
-        visualAid,
+        ...withCategory,
+        visualType,
+        visualAid: visualType,
         learnBefore: c.learnBefore.filter((id) => allIds.has(id)),
         learnAfter: c.learnAfter.filter((id) => allIds.has(id)),
         relatedConcepts: c.relatedConcepts.filter((id) => allIds.has(id)),
@@ -169,11 +173,7 @@ export const conceptPurposeOptions: readonly ConceptPurpose[] = [
   "general",
 ] as const;
 
-export const conceptCategoryLandings: { label: string; conceptType: ConceptType }[] = [
-  { label: "Foundations", conceptType: "foundation" },
-  { label: "Algorithms", conceptType: "algorithm" },
-  { label: "Metrics", conceptType: "metric" },
-  { label: "Preprocessing", conceptType: "preprocessing" },
-  { label: "Modern AI", conceptType: "llm concept" },
-  { label: "Deployment", conceptType: "deployment" },
-];
+export const conceptCategoryLandings = LIBRARY_CATEGORIES.map((label) => ({
+  label,
+  category: label,
+}));

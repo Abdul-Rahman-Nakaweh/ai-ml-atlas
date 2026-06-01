@@ -1,15 +1,60 @@
 /** Identifiers for educational visuals — add new types here and register in components/visuals/registry.tsx */
 export type VisualAidType =
+  // Workflow
   | "pipeline-flow"
   | "data-split"
-  | "confusion-matrix"
-  | "metric-relations"
-  | "error-curve"
+  | "cross-validation"
+  | "nested-cv"
+  | "grid-search"
+  | "bias-variance"
+  // Foundations
+  | "dataset-table"
+  | "feature-vs-label"
+  | "training-vs-inference"
+  | "parameter-vs-hyperparameter"
+  // Preprocessing
+  | "standardization"
+  | "normalization"
+  | "one-hot-encoding"
+  | "feature-selection-extraction"
   | "pca"
+  // Algorithms
+  | "linear-regression"
+  | "logistic-regression"
   | "svm-margin"
   | "knn"
   | "decision-tree"
+  | "random-forest"
+  | "gradient-boosting"
+  // Metrics
+  | "confusion-matrix"
+  | "accuracy-metric"
+  | "metric-relations"
+  | "precision-recall"
+  | "roc-auc"
+  | "mae-rmse"
+  | "error-curve"
+  | "error-curve-underfitting"
+  // Deep learning
   | "neural-network"
+  | "cnn"
+  | "rnn-lstm"
+  | "backpropagation"
+  | "gradient-descent"
+  // Modern AI
+  | "tokenization"
+  | "embeddings"
   | "attention"
+  | "transformer-block"
+  | "rag"
+  | "vector-database"
+  | "fine-tuning-lora"
+  | "agent-tool-use"
+  // Deployment
   | "quantization"
+  | "pruning"
+  | "knowledge-distillation"
+  | "onnx"
+  | "tflite"
+  | "deployment-verification"
   | "tinyml-tradeoff";

@@ -42,7 +42,7 @@ function Block({ block }: { block: LearnBlock }) {
       );
     case "visual":
       return block.visualType ? (
-        <VisualIntuitionSection visualAid={block.visualType} caption={block.content} />
+        <VisualIntuitionSection visualType={block.visualType} caption={block.content} />
       ) : null;
     default:
       return null;

@@ -1,35 +1,22 @@
 import type { Concept } from "@/types/concept";
 import { conceptById } from "@/data/concepts";
+import { formatDifficultyLabel } from "@/data/concepts/libraryCategories";
 import { Badge } from "@/components/Badge";
-import { InfoCallout } from "@/components/InfoCallout";
 import { VisualIntuitionSection } from "@/components/visuals/VisualIntuitionSection";
 import { cn } from "@/lib/utils";
 
-const SECTIONS: { key: keyof Concept; label: string }[] = [
+const EARLY_SECTIONS: { key: keyof Concept; label: string }[] = [
   { key: "coreMeaning", label: "Core Meaning" },
   { key: "workflowLocation", label: "Workflow Location" },
   { key: "functionRole", label: "Function" },
   { key: "mechanism", label: "Mechanism" },
-  { key: "example", label: "Example" },
-  { key: "limitation", label: "Limitation" },
 ];
 
-function typeBadgeVariant(
-  type: Concept["conceptType"]
-): "default" | "accent" | "pipeline" | "gen1" | "gen3" {
-  switch (type) {
-    case "llm concept":
-      return "gen3";
-    case "algorithm":
-      return "gen1";
-    case "metric":
-      return "accent";
-    case "preprocessing":
-      return "pipeline";
-    default:
-      return "default";
-  }
-}
+const LATE_SECTIONS: { key: keyof Concept; label: string }[] = [
+  { key: "example", label: "Practical Example" },
+  { key: "commonDistinction", label: "Common Distinction" },
+  { key: "limitation", label: "Limitation" },
+];
 
 interface ConceptDetailPanelProps {
   concept: Concept | null;
@@ -58,6 +45,7 @@ export function ConceptDetailPanel({
   }
 
   const pathIds = [...concept.learnBefore, concept.id, ...concept.learnAfter];
+  const visualType = concept.visualType ?? concept.visualAid;
 
   return (
     <article
@@ -74,11 +62,8 @@ export function ConceptDetailPanel({
           )}
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Badge variant={typeBadgeVariant(concept.conceptType)}>{concept.conceptType}</Badge>
-          <Badge variant="pipeline">{concept.pipelineStage}</Badge>
-          <Badge variant={generationVariant(concept.generation)}>{concept.generation}</Badge>
-          <Badge variant="default">{concept.difficulty}</Badge>
-          <Badge variant="default">{concept.purpose}</Badge>
+          <Badge variant="pipeline">{concept.libraryCategory}</Badge>
+          <Badge variant="default">{formatDifficultyLabel(concept.difficulty)}</Badge>
         </div>
       </header>
 
@@ -114,11 +99,22 @@ export function ConceptDetailPanel({
       )}
 
       <div className="px-5 py-5 md:px-6 space-y-5 max-w-prose">
-        {concept.visualAid && (
-          <VisualIntuitionSection visualAid={concept.visualAid} />
-        )}
+        {EARLY_SECTIONS.map(({ key, label }) => {
+          const text = concept[key] as string;
+          if (!text?.trim()) return null;
+          return (
+            <section key={key}>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                {label}
+              </h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-300">{text}</p>
+            </section>
+          );
+        })}
 
-        {SECTIONS.map(({ key, label }) => (
+        {visualType && <VisualIntuitionSection visualType={visualType} />}
+
+        {LATE_SECTIONS.map(({ key, label }) => (
           <section key={key}>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               {label}
@@ -128,10 +124,6 @@ export function ConceptDetailPanel({
             </p>
           </section>
         ))}
-
-        <InfoCallout variant="tip" title="Common Distinction">
-          {concept.commonDistinction}
-        </InfoCallout>
 
         {concept.learnBefore.length > 0 && (
           <section>
@@ -151,12 +143,14 @@ export function ConceptDetailPanel({
           </section>
         )}
 
-        <section>
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Related Concepts
-          </h3>
-          <ConceptChips ids={concept.relatedConcepts} onSelect={onSelectConcept} />
-        </section>
+        {concept.relatedConcepts.length > 0 && (
+          <section>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Related Concepts
+            </h3>
+            <ConceptChips ids={concept.relatedConcepts} onSelect={onSelectConcept} />
+          </section>
+        )}
 
         {concept.technicalNote && (
           <section className="rounded-lg border border-atlas-border/40 bg-atlas-bg/50 px-4 py-3">
@@ -195,11 +189,4 @@ function ConceptChips({
       })}
     </div>
   );
-}
-
-function generationVariant(gen: Concept["generation"]): "gen1" | "gen2" | "gen3" | "cross" {
-  if (gen === "Gen 1") return "gen1";
-  if (gen === "Gen 2") return "gen2";
-  if (gen === "Gen 3") return "gen3";
-  return "cross";
 }

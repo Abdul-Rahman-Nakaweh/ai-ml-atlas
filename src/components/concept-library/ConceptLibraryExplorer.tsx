@@ -4,59 +4,110 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   conceptById,
-  conceptCategoryLandings,
   conceptDifficultyOptions,
   conceptGenerationOptions,
   conceptPipelineOptions,
   conceptPurposeOptions,
-  conceptTypeOptions,
   concepts,
 } from "@/data/concepts";
+import {
+  formatDifficultyLabel,
+  LIBRARY_CATEGORIES,
+} from "@/data/concepts/libraryCategories";
 import type { Concept } from "@/types/concept";
 import { FilterPills } from "@/components/FilterPills";
 import { PageContainer } from "@/components/PageContainer";
 import { SearchBar } from "@/components/SearchBar";
 import { ConceptDetailPanel } from "./ConceptDetailPanel";
 import { ConceptTermList } from "./ConceptTermList";
+import { cn } from "@/lib/utils";
+
+const LEVEL_OPTIONS = ["Foundation", "Intermediate", "Advanced"] as const;
+
+const DEPLOYMENT_OPTIONS = ["None", "Low", "Medium", "High"] as const;
 
 function conceptSearchText(c: Concept) {
   return [
     c.name,
     c.fullName,
     c.summary,
-    c.conceptType,
-    c.pipelineStage,
-    c.generation,
-    c.difficulty,
-    c.purpose,
+    c.libraryCategory,
     c.coreMeaning,
+    c.mechanism,
   ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
 }
 
+function levelToFilter(difficulty: Concept["difficulty"]): string {
+  return formatDifficultyLabel(difficulty);
+}
+
+function filterToLevel(level: string): Concept["difficulty"] | null {
+  if (level === "Foundation") return "foundation";
+  if (level === "Intermediate") return "intermediate";
+  if (level === "Advanced") return "advanced";
+  return null;
+}
+
 export function ConceptLibraryExplorer() {
   const [search, setSearch] = useState("");
-  const [conceptType, setConceptType] = useState("All");
+  const [category, setCategory] = useState<string>("All");
+  const [level, setLevel] = useState<string>("All");
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const [generation, setGeneration] = useState("All");
   const [pipeline, setPipeline] = useState("All");
-  const [difficulty, setDifficulty] = useState("All");
   const [purpose, setPurpose] = useState("All");
+  const [deployment, setDeployment] = useState("All");
+  const [mathFoundation, setMathFoundation] = useState("All");
   const [selectedId, setSelectedId] = useState<string | null>(concepts[0]?.id ?? null);
+
+  const mathOptions = useMemo(() => {
+    const set = new Set<string>();
+    for (const c of concepts) {
+      c.mathFoundation?.forEach((m) => set.add(m));
+    }
+    return [...set].sort();
+  }, []);
+
+  const hasActiveFilters =
+    search.trim() !== "" ||
+    category !== "All" ||
+    level !== "All" ||
+    generation !== "All" ||
+    pipeline !== "All" ||
+    purpose !== "All" ||
+    deployment !== "All" ||
+    mathFoundation !== "All";
+
+  const clearFilters = useCallback(() => {
+    setSearch("");
+    setCategory("All");
+    setLevel("All");
+    setGeneration("All");
+    setPipeline("All");
+    setPurpose("All");
+    setDeployment("All");
+    setMathFoundation("All");
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
+    const levelFilter = level !== "All" ? filterToLevel(level) : null;
+
     return concepts.filter((c) => {
-      if (conceptType !== "All" && c.conceptType !== conceptType) return false;
+      if (category !== "All" && c.libraryCategory !== category) return false;
+      if (levelFilter && c.difficulty !== levelFilter) return false;
       if (generation !== "All" && c.generation !== generation) return false;
       if (pipeline !== "All" && c.pipelineStage !== pipeline) return false;
-      if (difficulty !== "All" && c.difficulty !== difficulty) return false;
       if (purpose !== "All" && c.purpose !== purpose) return false;
+      if (deployment !== "All" && c.deploymentRelevance !== deployment) return false;
+      if (mathFoundation !== "All" && !c.mathFoundation?.includes(mathFoundation)) return false;
       if (q && !conceptSearchText(c).includes(q)) return false;
       return true;
     });
-  }, [search, conceptType, generation, pipeline, difficulty, purpose]);
+  }, [search, category, level, generation, pipeline, purpose, deployment, mathFoundation]);
 
   useEffect(() => {
     if (filtered.length === 0) {
@@ -84,89 +135,136 @@ export function ConceptLibraryExplorer() {
 
   return (
     <PageContainer className="pb-20">
-      <header className="max-w-4xl mb-8">
+      <header className="max-w-3xl mb-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-cyan-500/80">
           Reference
         </p>
         <h1 className="mt-2 text-3xl font-bold text-white tracking-tight">Concept Library</h1>
-        <p className="mt-4 text-slate-400 leading-relaxed max-w-2xl">
-          A structured reference for AI/ML terms, algorithms, metrics, workflow methods, deployment
-          concepts, and modern AI techniques. This library connects each concept to its workflow
-          location, technical basis, practical use, limitations, and related concepts.
+        <p className="mt-4 text-slate-400 leading-relaxed">
+          A formal learning reference connecting each term to its meaning, workflow role, mechanism,
+          practical example, limitations, and related concepts. Select a term from the index to study
+          its structured entry.
         </p>
-        <p className="mt-3 text-sm text-slate-500 max-w-2xl">
-          For guided study in sequence, use{" "}
+        <p className="mt-3 text-sm text-slate-500">
+          For guided study in sequence, see{" "}
           <Link href="/learn" className="text-cyan-400 hover:text-cyan-300">
             Learn
-          </Link>
-          . For decision criteria, use{" "}
-          <Link href="/guides" className="text-cyan-400 hover:text-cyan-300">
-            Guides
           </Link>
           .
         </p>
       </header>
 
-      <div className="flex flex-wrap gap-2 mb-6">
-        {conceptCategoryLandings.map(({ label, conceptType: type }) => (
-          <button
-            key={type}
-            type="button"
-            onClick={() => {
-              setConceptType(type);
-              setSearch("");
-            }}
-            className="rounded-lg border border-atlas-border/50 px-3 py-1.5 text-xs text-slate-400 hover:border-cyan-500/40 hover:text-cyan-300 transition"
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      <div className="max-w-4xl space-y-4 mb-6">
+      <div className="max-w-3xl space-y-4 mb-8">
         <SearchBar
           value={search}
           onChange={setSearch}
-          placeholder="Search concepts, mechanisms, or workflow stages..."
+          placeholder="Search concepts by name or topic..."
         />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FilterPills
-            label="Concept type"
-            options={[...conceptTypeOptions]}
-            selected={conceptType}
-            onSelect={setConceptType}
-          />
-          <FilterPills
-            label="Generation"
-            options={[...conceptGenerationOptions]}
-            selected={generation}
-            onSelect={setGeneration}
-          />
-          <FilterPills
-            label="Pipeline stage"
-            options={[...conceptPipelineOptions]}
-            selected={pipeline}
-            onSelect={setPipeline}
-          />
-          <FilterPills
-            label="Difficulty"
-            options={[...conceptDifficultyOptions]}
-            selected={difficulty}
-            onSelect={setDifficulty}
-          />
+
+        <div className="flex flex-wrap items-end gap-4">
+          <div className="min-w-[200px] flex-1">
+            <label htmlFor="category-filter" className="text-xs font-medium uppercase tracking-wider text-slate-500">
+              Category
+            </label>
+            <select
+              id="category-filter"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="mt-1.5 w-full rounded-lg border border-atlas-border/60 bg-atlas-surface/50 px-3 py-2 text-sm text-slate-200 focus:border-cyan-500/50 focus:outline-none"
+            >
+              <option value="All">All categories</option>
+              {LIBRARY_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="min-w-[160px] flex-1">
+            <label htmlFor="level-filter" className="text-xs font-medium uppercase tracking-wider text-slate-500">
+              Level
+            </label>
+            <select
+              id="level-filter"
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+              className="mt-1.5 w-full rounded-lg border border-atlas-border/60 bg-atlas-surface/50 px-3 py-2 text-sm text-slate-200 focus:border-cyan-500/50 focus:outline-none"
+            >
+              <option value="All">All levels</option>
+              {LEVEL_OPTIONS.map((lv) => (
+                <option key={lv} value={lv}>
+                  {lv}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="rounded-lg border border-atlas-border/60 px-3 py-2 text-xs text-slate-400 hover:border-cyan-500/40 hover:text-cyan-300 transition"
+            >
+              Clear filters
+            </button>
+          )}
         </div>
-        <FilterPills
-          label="Purpose"
-          options={[...conceptPurposeOptions]}
-          selected={purpose}
-          onSelect={setPurpose}
-        />
+
+        <div className="border border-atlas-border/40 rounded-lg overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setAdvancedOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left text-sm text-slate-400 hover:bg-white/[0.02] transition"
+            aria-expanded={advancedOpen}
+          >
+            <span className="text-xs font-semibold uppercase tracking-wider">Advanced Filters</span>
+            <span className="text-slate-500">{advancedOpen ? "−" : "+"}</span>
+          </button>
+          {advancedOpen && (
+            <div className="px-4 pb-4 space-y-4 border-t border-atlas-border/30 pt-4">
+              <FilterPills
+                label="AI generation"
+                options={[...conceptGenerationOptions]}
+                selected={generation}
+                onSelect={setGeneration}
+              />
+              <FilterPills
+                label="Pipeline stage"
+                options={[...conceptPipelineOptions]}
+                selected={pipeline}
+                onSelect={setPipeline}
+              />
+              <FilterPills
+                label="Purpose"
+                options={[...conceptPurposeOptions]}
+                selected={purpose}
+                onSelect={setPurpose}
+              />
+              <FilterPills
+                label="Deployment relevance"
+                options={[...DEPLOYMENT_OPTIONS]}
+                selected={deployment}
+                onSelect={setDeployment}
+              />
+              {mathOptions.length > 0 && (
+                <FilterPills
+                  label="Math foundation"
+                  options={mathOptions}
+                  selected={mathFoundation}
+                  onSelect={setMathFoundation}
+                />
+              )}
+            </div>
+          )}
+        </div>
+
         <p className="text-xs text-slate-500">
           {filtered.length} {filtered.length === 1 ? "concept" : "concepts"}
         </p>
       </div>
 
-      <div className="lg:grid lg:grid-cols-[minmax(280px,360px)_1fr] lg:gap-8 lg:items-start">
+      <div className="lg:grid lg:grid-cols-[minmax(280px,340px)_1fr] lg:gap-8 lg:items-start">
         <div className="rounded-xl border border-atlas-border/50 bg-atlas-surface/20 overflow-hidden lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:flex lg:flex-col">
           <div className="px-4 py-3 border-b border-atlas-border/40 shrink-0">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
@@ -189,9 +287,6 @@ export function ConceptLibraryExplorer() {
 
       {selected && (
         <div className="lg:hidden mt-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">
-            Selected concept
-          </p>
           <ConceptDetailPanel concept={selected} onSelectConcept={selectConcept} />
         </div>
       )}

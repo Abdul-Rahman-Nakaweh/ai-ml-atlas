@@ -1,23 +1,7 @@
 import type { Concept } from "@/types/concept";
-import { Badge, generationVariant } from "@/components/Badge";
+import { formatDifficultyLabel } from "@/data/concepts/libraryCategories";
+import { Badge } from "@/components/Badge";
 import { cn } from "@/lib/utils";
-
-function typeBadgeVariant(
-  type: Concept["conceptType"]
-): "default" | "accent" | "pipeline" | "gen1" | "gen3" {
-  switch (type) {
-    case "llm concept":
-      return "gen3";
-    case "algorithm":
-      return "gen1";
-    case "metric":
-      return "accent";
-    case "preprocessing":
-      return "pipeline";
-    default:
-      return "default";
-  }
-}
 
 interface ConceptTermListProps {
   concepts: Concept[];
@@ -60,24 +44,18 @@ export function ConceptTermList({ concepts, selectedId, onSelect }: ConceptTermL
                   {concept.name}
                 </span>
                 {concept.fullName && (
-                  <span className="text-xs text-slate-500 truncate">{concept.fullName}</span>
+                  <span className="text-xs text-slate-500">{concept.fullName}</span>
                 )}
               </div>
               <p className="mt-1 text-xs leading-relaxed text-slate-400 line-clamp-2">
                 {concept.summary}
               </p>
-              <div className="mt-2 flex flex-wrap gap-1">
-                <Badge variant={typeBadgeVariant(concept.conceptType)} className="!px-1.5 !py-0 text-[10px]">
-                  {concept.conceptType}
-                </Badge>
+              <div className="mt-2 flex flex-wrap gap-1.5">
                 <Badge variant="pipeline" className="!px-1.5 !py-0 text-[10px]">
-                  {concept.pipelineStage}
-                </Badge>
-                <Badge variant={generationVariant(concept.generation)} className="!px-1.5 !py-0 text-[10px]">
-                  {concept.generation}
+                  {concept.libraryCategory}
                 </Badge>
                 <Badge variant="default" className="!px-1.5 !py-0 text-[10px]">
-                  {concept.difficulty}
+                  {formatDifficultyLabel(concept.difficulty)}
                 </Badge>
               </div>
             </button>

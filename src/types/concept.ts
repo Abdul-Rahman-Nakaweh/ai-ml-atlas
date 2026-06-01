@@ -1,3 +1,19 @@
+import type { VisualAidType } from "./visual";
+
+export const LIBRARY_CATEGORIES = [
+  "Foundations",
+  "Preprocessing and Features",
+  "Algorithms",
+  "Evaluation Metrics",
+  "Validation and Tuning",
+  "Deep Learning",
+  "Modern AI and LLMs",
+  "Deployment and TinyML",
+  "Math and Optimization",
+] as const;
+
+export type LibraryCategory = (typeof LIBRARY_CATEGORIES)[number];
+
 export type ConceptType =
   | "foundation"
   | "algorithm"
@@ -43,14 +59,13 @@ export type ConceptPurpose =
   | "optimization"
   | "general";
 
-import type { VisualAidType } from "./visual";
-
 /** Unified concept entry for the Concept Library */
 export interface Concept {
   id: string;
   name: string;
   fullName?: string;
   summary: string;
+  libraryCategory: LibraryCategory;
   conceptType: ConceptType;
   generation: ConceptGeneration;
   pipelineStage: ConceptPipelineStage;
@@ -67,6 +82,11 @@ export interface Concept {
   learnAfter: string[];
   relatedConcepts: string[];
   technicalNote?: string;
+  /** From technique metadata — used in advanced filters */
+  deploymentRelevance?: string;
+  mathFoundation?: string[];
   /** When set, the detail panel shows a Visual Intuition diagram */
+  visualType?: VisualAidType;
+  /** @deprecated Use visualType */
   visualAid?: VisualAidType;
 }
